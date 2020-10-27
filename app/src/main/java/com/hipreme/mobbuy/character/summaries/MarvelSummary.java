@@ -28,5 +28,4 @@ public class MarvelSummary
             Error.print(e, MarvelSummary.class);}
     }
 
-    public void start(){}
 }

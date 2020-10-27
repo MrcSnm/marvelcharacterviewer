@@ -11,11 +11,9 @@ public class StorySummary extends MarvelSummary
      * The parameter is already generated on the container class "MarvelList"
      * @param o
      */
-    public StorySummary(JSONObject o){super(o);}
-
-    @Override
-    public void start()
+    public StorySummary(JSONObject o)
     {
+        super(o);
         try{type = json.getString(TYPE);}
         catch(Exception e){Error.print(e, StorySummary.class);}
     }

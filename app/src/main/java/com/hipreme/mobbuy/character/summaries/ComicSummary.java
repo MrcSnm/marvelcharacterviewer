@@ -5,9 +5,4 @@ import org.json.JSONObject;
 public class ComicSummary extends MarvelSummary
 {
     public ComicSummary(JSONObject item){super(item);}
-
-    @Override
-    public void start() {
-
-    }
 }

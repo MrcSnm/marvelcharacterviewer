@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MarvelList<T extends MarvelSummary>
+public abstract class MarvelList<T extends MarvelSummary>
 {
     public static final String AVAILABLE = "available";
     public static final String RETURNED = "returned";
@@ -35,12 +35,12 @@ public class MarvelList<T extends MarvelSummary>
             items = new ArrayList<>();
             for(int i = 0, len = arr.length(); i < len; i++)
             {
-                T summary = (T)new MarvelSummary(arr.getJSONObject(i));
-                summary.start();
+                T summary = getSummary(arr.getJSONObject(i));
                 items.add(summary);
             }
         }
         catch(Exception e){Error.print(e, MarvelList.class);}
     }
+    public abstract T getSummary(JSONObject jsonItem);
 
 }

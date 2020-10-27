@@ -7,10 +7,4 @@ public class SeriesSummary extends MarvelSummary
     {
         super(o);
     }
-
-    @Override
-    public void start() {
-
-    }
-
 }

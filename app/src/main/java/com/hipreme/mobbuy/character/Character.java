@@ -4,6 +4,7 @@ import com.hipreme.mobbuy.character.lists.ComicList;
 import com.hipreme.mobbuy.character.lists.EventList;
 import com.hipreme.mobbuy.character.lists.SeriesList;
 import com.hipreme.mobbuy.character.lists.StoryList;
+import com.hipreme.mobbuy.character.summaries.ComicSummary;
 import com.hipreme.mobbuy.utils.Error;
 
 import org.json.JSONArray;
@@ -49,7 +50,6 @@ public class Character
         }
         catch (Exception e){Error.print(e);}
 
-        System.out.println("Character named '" + name+"' entered the arena!");
     }
 
 

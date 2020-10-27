@@ -10,4 +10,9 @@ public class EventList extends MarvelList<EventSummary>
     {
         super(o, EVENTS);
     }
+
+    @Override
+    public EventSummary getSummary(JSONObject jsonItem) {
+        return new EventSummary(jsonItem);
+    }
 }
