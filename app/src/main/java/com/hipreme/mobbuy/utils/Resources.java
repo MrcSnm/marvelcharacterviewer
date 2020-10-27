@@ -14,4 +14,6 @@ public class Resources
 
         return registeredContext.getString(r_id);
     }
+
+    public static Context getRegisteredContext(){return registeredContext;}
 }

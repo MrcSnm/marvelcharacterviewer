@@ -3,17 +3,20 @@ package com.hipreme.mobbuy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hipreme.mobbuy.global.UI;
 import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.Digest;
+import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.JSONUtils;
 import com.hipreme.mobbuy.utils.MarvelAPI;
 import com.hipreme.mobbuy.utils.Resources;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,5 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
+
     }
 }
