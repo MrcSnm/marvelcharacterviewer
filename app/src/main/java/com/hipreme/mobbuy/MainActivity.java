@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
+import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.utils.Digest;
 import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.utils.Resources;
@@ -28,24 +29,14 @@ public class MainActivity extends AppCompatActivity {
         Digest.startMD5();
         Resources.registerContext(this);
         UI.start();
+        CharacterNavigator.loadFavorites();
 
         String myUrl = MarvelAPI.getFromPublicPath(R.string.marvel_characters);
-
-        /*JSONUtils.getUrlJson(this, myUrl, new Callback<Void, JSONObject>() {
-            @Override
-            public Void execute(JSONObject param)
-            {
-                System.out.println(param);
-                chars = Character.getCharacters(param);
-                Storage.favoriteContent(chars.get(0));
-                Storage.saveContent();
-                return null;
-            }
-        });*/
-        if(Storage.favoriteExists())
-        {
-            ArrayList<Character> chars = Storage.loadContent();
-        }
-
+    }
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        Storage.saveContent();
     }
 }
