@@ -3,22 +3,14 @@ package com.hipreme.mobbuy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.hipreme.mobbuy.character.Character;
+import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
-import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.Digest;
-import com.hipreme.mobbuy.utils.FileUtils;
-import com.hipreme.mobbuy.utils.JSONUtils;
-import com.hipreme.mobbuy.utils.MarvelAPI;
+import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.utils.Resources;
 
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    ArrayList<com.hipreme.mobbuy.character.Character> chars;
+    ArrayList<Character> chars;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public Void execute(JSONObject param)
             {
                 System.out.println(param);
-                chars = com.hipreme.mobbuy.character.Character.getCharacters(param);
+                chars = Character.getCharacters(param);
                 Storage.favoriteContent(chars.get(0));
                 Storage.saveContent();
                 return null;

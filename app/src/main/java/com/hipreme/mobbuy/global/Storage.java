@@ -1,6 +1,6 @@
 package com.hipreme.mobbuy.global;
 
-import com.hipreme.mobbuy.character.Character;
+import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.Error;
 

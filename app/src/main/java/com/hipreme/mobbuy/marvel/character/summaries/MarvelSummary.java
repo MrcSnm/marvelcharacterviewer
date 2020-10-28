@@ -1,4 +1,4 @@
-package com.hipreme.mobbuy.character.summaries;
+package com.hipreme.mobbuy.marvel.character.summaries;
 
 import com.hipreme.mobbuy.utils.Error;
 

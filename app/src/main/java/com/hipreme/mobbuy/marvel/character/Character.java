@@ -1,10 +1,9 @@
-package com.hipreme.mobbuy.character;
+package com.hipreme.mobbuy.marvel.character;
 
-import com.hipreme.mobbuy.character.lists.ComicList;
-import com.hipreme.mobbuy.character.lists.EventList;
-import com.hipreme.mobbuy.character.lists.SeriesList;
-import com.hipreme.mobbuy.character.lists.StoryList;
-import com.hipreme.mobbuy.character.summaries.ComicSummary;
+import com.hipreme.mobbuy.marvel.character.lists.ComicList;
+import com.hipreme.mobbuy.marvel.character.lists.EventList;
+import com.hipreme.mobbuy.marvel.character.lists.SeriesList;
+import com.hipreme.mobbuy.marvel.character.lists.StoryList;
 import com.hipreme.mobbuy.utils.Error;
 
 import org.json.JSONArray;

@@ -1,8 +1,10 @@
-package com.hipreme.mobbuy.utils;
+package com.hipreme.mobbuy.marvel;
 
 import androidx.annotation.NonNull;
 
 import com.hipreme.mobbuy.R;
+import com.hipreme.mobbuy.utils.Resources;
+
 import java.util.Date;
 import static com.hipreme.mobbuy.utils.Digest.MD5;
 

@@ -1,5 +1,5 @@
-package com.hipreme.mobbuy.character.lists;
-import com.hipreme.mobbuy.character.summaries.SeriesSummary;
+package com.hipreme.mobbuy.marvel.character.lists;
+import com.hipreme.mobbuy.marvel.character.summaries.SeriesSummary;
 
 import org.json.JSONObject;
 
