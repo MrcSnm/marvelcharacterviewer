@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hipreme.mobbuy.character.Character;
+import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
 import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.Digest;
@@ -25,18 +27,6 @@ public class MainActivity extends AppCompatActivity {
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-    public static final String RESET = "\033[0m";  // Text Reset
-
-    // Regular Colors
-    public static final String BLACK = "\033[0;30m";   // BLACK
-    public static final String RED = "\033[0;31m";     // RED
-    public static final String GREEN = "\033[0;32m";   // GREEN
-    public static final String YELLOW = "\033[0;33m";  // YELLOW
-    public static final String BLUE = "\033[0;34m";    // BLUE
-    public static final String PURPLE = "\033[0;35m";  // PURPLE
-    public static final String CYAN = "\033[0;36m";    // CYAN
-    public static final String WHITE = "\033[0;37m";   // WHITE
-
 
     ArrayList<com.hipreme.mobbuy.character.Character> chars;
     @Override
@@ -49,15 +39,21 @@ public class MainActivity extends AppCompatActivity {
 
         String myUrl = MarvelAPI.getFromPublicPath(R.string.marvel_characters);
 
-        JSONUtils.getUrlJson(this, myUrl, new Callback<Void, JSONObject>() {
+        /*JSONUtils.getUrlJson(this, myUrl, new Callback<Void, JSONObject>() {
             @Override
             public Void execute(JSONObject param)
             {
                 System.out.println(param);
                 chars = com.hipreme.mobbuy.character.Character.getCharacters(param);
+                Storage.favoriteContent(chars.get(0));
+                Storage.saveContent();
                 return null;
             }
-        });
+        });*/
+        if(Storage.favoriteExists())
+        {
+            ArrayList<Character> chars = Storage.loadContent();
+        }
 
     }
 }

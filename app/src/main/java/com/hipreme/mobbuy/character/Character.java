@@ -33,11 +33,15 @@ public class Character
     public EventList events;
     public SeriesList series;
 
+    //For serializing
+    public JSONObject objReference;
+
 
     public Character(JSONObject o)
     {
         try
         {
+            objReference = o;
             id = o.getLong(ID);
             name = o.getString(NAME);
             description= o.getString(DESCRIPTION);
@@ -52,17 +56,14 @@ public class Character
 
     }
 
-
-    public static ArrayList<Character> getCharacters(JSONObject apiObj)
+    public static ArrayList<Character> getCharactersRaw(JSONArray apiArray)
     {
         try
         {
-            JSONObject data = apiObj.getJSONObject(DATA);
-            JSONArray results = data.getJSONArray(RESULTS);
             ArrayList<Character> ret = new ArrayList<>();
-            for(int i = 0, len = results.length(); i < len; i++)
+            for(int i = 0, len = apiArray.length(); i < len; i++)
             {
-                JSONObject chars = results.getJSONObject(i);
+                JSONObject chars = apiArray.getJSONObject(i);
                 ret.add(new Character(chars));
             }
             return ret;
@@ -72,11 +73,19 @@ public class Character
             Error.print(e, Character.class, "Error at serializing data");
         }
         return null;
-
     }
-    //public ArrayList<String> getCharacterJSON()
-    //{
-      //  String charactersUrl = MarvelAPI.getFromPublicPath(Resources.getString(R.string.marvel_characters));
-
-    //}
+    public static ArrayList<Character> getCharacters(JSONObject apiObj)
+    {
+        try
+        {
+            JSONObject data = apiObj.getJSONObject(DATA);
+            JSONArray results = data.getJSONArray(RESULTS);
+            return getCharactersRaw(results);
+        }
+        catch (Exception e)
+        {
+            Error.print(e, Character.class, "Error at serializing data");
+        }
+        return null;
+    }
 }
