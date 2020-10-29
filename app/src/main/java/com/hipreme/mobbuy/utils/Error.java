@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class Error
 {
-    public static final boolean IS_VERBOSE = true;
+    public static final boolean IS_VERBOSE = false;
     public static final boolean TRACE_ERROR = true;
     public static void print(Exception e)
     {

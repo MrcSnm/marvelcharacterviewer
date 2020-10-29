@@ -17,9 +17,15 @@ import static android.net.ConnectivityManager.NetworkCallback;
 public class NetworkManager
 {
     private static boolean hasConnection;
+    private static boolean isMobileData;
+    private static boolean isWifi;
+    private static boolean isEthernet;
+
     private static ConnectivityManager cm;
     private static NetworkCallback defaultCb;
     protected static ArrayList<NetCallback> registeredCallbacks;
+
+    protected static ArrayList<NetCallback> pausedCallbacks;
 
 
     protected static class NetCallback
@@ -61,6 +67,9 @@ public class NetworkManager
     }
 
     public static boolean hasInternetConnection(){return hasConnection;}
+    public static boolean isOnMobileData(){return hasConnection && isMobileData;}
+    public static boolean isOnEthernet(){return hasConnection && isEthernet;}
+    public static boolean isOnWifi(){return hasConnection && isWifi;}
 
 
 
@@ -72,28 +81,55 @@ public class NetworkManager
             Error.print("Attempt to initialize NetworkManager twice");
             return;
         }
+        registeredCallbacks = new ArrayList<>();
+        pausedCallbacks = new ArrayList<>();
         cm = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        defaultCb = new NetworkCallback()
+        cm.registerDefaultNetworkCallback(defaultCb = new NetworkCallback()
         {
             @Override
             public void onAvailable(Network net)
             {
                 super.onAvailable(net);
                 hasConnection = true;
-                Toast.makeText(Resources.getRegisteredContext(), "Network available", Toast.LENGTH_LONG).show();
+                //Toast.makeText(Resources.getRegisteredContext(), "Network available", Toast.LENGTH_LONG).show();
             }
             @Override
             public void onLost(Network net)
             {
                 super.onLost(net);
                 hasConnection = false;
-                Toast.makeText(Resources.getRegisteredContext(), "Network unavailable", Toast.LENGTH_LONG).show();
+                Toast.makeText(Resources.getRegisteredContext(), "Network unavailable please try reconnecting", Toast.LENGTH_LONG).show();
             }
-        };
-
-        cm.registerDefaultNetworkCallback(defaultCb);
+        });
+        registerNetworkCallback("__MobileDataChecker__", new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).build(), new
+                NetworkCallback()
+                {
+                    @Override
+                    public void onAvailable(Network net){super.onAvailable(net);isMobileData = true;}
+                    @Override
+                    public void onLost(Network net){super.onLost(net);isMobileData = false;}
+                });
+        registerNetworkCallback("__WifiChecker__", new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI).build(), new
+                NetworkCallback()
+                {
+                    @Override
+                    public void onAvailable(Network net){super.onAvailable(net);isWifi= true;}
+                    @Override
+                    public void onLost(Network net){super.onLost(net);isWifi= false;}
+                });
+        registerNetworkCallback("__EthernetChecker__", new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET).build(), new
+                NetworkCallback()
+                {
+                    @Override
+                    public void onAvailable(Network net){super.onAvailable(net);isEthernet= true;}
+                    @Override
+                    public void onLost(Network net){super.onLost(net);isEthernet= false;}
+                });
     }
+
     /*public static boolean hasInternet()
     {
         Network network = cm.getActiveNetwork();
@@ -128,21 +164,62 @@ public class NetworkManager
         return cm != null;
     }
 
-    public static void unregisterNetworkCallback(String name)
+    protected static int getRegisteredCallbackIndex(String name)
     {
-        if(!hasInitialized("unregister NetworkCallback"))
-            return;
         int reg = -1;
         for(int i = 0, len = registeredCallbacks.size(); i < len; i++)
         {
             if(registeredCallbacks.get(i).equals(name))
+            {
                 reg = i;
+                break;
+            }
         }
+        return reg;
+    }
 
+    public static void pauseCallback(String name)
+    {
+        if(!hasInitialized("pause callback"))
+            return;
+        int index = getRegisteredCallbackIndex(name);
+        if(index != -1)
+        {
+            NetCallback cb = registeredCallbacks.get(index);
+            cm.unregisterNetworkCallback(cb.cb);
+            registeredCallbacks.remove(cb);
+            pausedCallbacks.add(cb);
+        }
+    }
+
+    public static void unregisterNetworkCallback(String name)
+    {
+        if(!hasInitialized("unregister NetworkCallback"))
+            return;
+        int reg = getRegisteredCallbackIndex(name);
         if(reg != -1)
         {
             cm.unregisterNetworkCallback(registeredCallbacks.get(reg).cb);
             registeredCallbacks.remove(reg);
+        }
+    }
+
+    /**
+     * Pauses every registered callback
+     */
+    public static void onPause()
+    {
+        while(registeredCallbacks.size() > 0)
+            pauseCallback(registeredCallbacks.get(0).name);
+    }
+
+    public static void onResume()
+    {
+        while(pausedCallbacks.size() > 0)
+        {
+            NetCallback cb = pausedCallbacks.get(0);
+            pausedCallbacks.remove(cb);
+            registerNetworkCallback(cb.name, cb.req, cb.cb);
         }
     }
 

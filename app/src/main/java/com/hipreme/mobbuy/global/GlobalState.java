@@ -1,6 +1,7 @@
 package com.hipreme.mobbuy.global;
 
 import android.content.Context;
+import android.net.Network;
 
 import androidx.annotation.NonNull;
 import com.hipreme.mobbuy.utils.Error;
@@ -24,5 +25,14 @@ public class GlobalState
         UI.start();
         NetworkManager.startChecking(ctx);
         CharacterNavigator.loadFavorites();
+    }
+
+    public static void onPause()
+    {
+        NetworkManager.onPause();
+    }
+    public static void onResume()
+    {
+        NetworkManager.onResume();
     }
 }

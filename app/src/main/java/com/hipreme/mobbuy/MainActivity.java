@@ -31,11 +31,19 @@ public class MainActivity extends AppCompatActivity {
         GlobalState.initialize(this);
         Resources.NetworkConnection t =Resources.getNetworkConnectionType();
 
-        System.out.println(NetworkManager.hasInternet());
-        //if(t == Resources.NetworkConnection.NONE)
-        //{
-            //Toast.makeText(this, "No internet connection found!", Toast.LENGTH_LONG).show();
-        //}
+    }
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        GlobalState.onPause();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        GlobalState.onResume();
     }
 
     @Override
