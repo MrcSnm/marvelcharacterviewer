@@ -3,7 +3,10 @@ package com.hipreme.mobbuy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.hipreme.mobbuy.global.GlobalState;
+import com.hipreme.mobbuy.global.NetworkManager;
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
@@ -21,18 +24,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    ArrayList<Character> chars;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Digest.startMD5();
-        Resources.registerContext(this);
-        UI.start();
-        CharacterNavigator.loadFavorites();
+        GlobalState.initialize(this);
+        Resources.NetworkConnection t =Resources.getNetworkConnectionType();
 
-        String myUrl = MarvelAPI.getFromPublicPath(R.string.marvel_characters);
+        System.out.println(NetworkManager.hasInternet());
+        //if(t == Resources.NetworkConnection.NONE)
+        //{
+            //Toast.makeText(this, "No internet connection found!", Toast.LENGTH_LONG).show();
+        //}
     }
+
     @Override
     protected void onStop()
     {
