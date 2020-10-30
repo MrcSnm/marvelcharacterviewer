@@ -17,9 +17,8 @@ public class JSONUtils
     private static class JSONTask extends Web.LoadURLTask<JSONObject>
     {
         Callback<Void, JSONObject> onDataLoad;
-        public JSONTask(Context ctx, Callback<Void, JSONObject> cb)
+        public JSONTask(Callback<Void, JSONObject> cb)
         {
-            super(ctx);
             onDataLoad = cb;
         }
         @Override
@@ -32,9 +31,9 @@ public class JSONUtils
                 onDataLoad.execute(resultStored);
         }
     }
-    public static JSONTask getUrlJson(@Nullable Context ctx, String url, Callback<Void, JSONObject> cb)
+    public static JSONTask getUrlJson(String url, Callback<Void, JSONObject> cb)
     {
-        return (JSONTask)(new JSONTask(ctx, cb).execute(url));
+        return (JSONTask)(new JSONTask(cb).execute(url));
     }
 
 }

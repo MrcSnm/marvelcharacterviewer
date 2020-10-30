@@ -46,9 +46,9 @@ public class Pagination
 
         if(useOffset)
             p+= ((p.lastIndexOf("?") != -1) ? "&" : "?") +offsetParamName+"="+currentOffset;
-        if(useMax)
+        if(useMax && maxItems != 0)
             p+= "&"+maxParamName+"="+maxItems;
-        if(useOrder)
+        if(useOrder && !orderBy.equals(null))
             p+= "&"+orderByParamName+"="+orderBy;
         return p;
     }

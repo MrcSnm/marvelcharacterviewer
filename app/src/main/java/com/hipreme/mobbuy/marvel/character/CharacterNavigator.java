@@ -61,8 +61,7 @@ public class CharacterNavigator
         int rangeIndex;
         if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET)) == -1)
         {
-            JSONUtils.getUrlJson(Resources.getRegisteredContext(),
-                pagination.getPath(Resources.getString(R.string.marvel_characters),
+            JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
                         true, true, true), new Callback<Void, JSONObject>() {
                     @Override
                     public Void execute(JSONObject param)

@@ -19,12 +19,7 @@ public class Web
     public static class LoadURLTask<T> extends AsyncTask<String, String, String>
     {
         T resultStored;
-        private ProgressBar pb;
-        public LoadURLTask(@Nullable Context ctx)
-        {
-            if(ctx != null)
-                pb = UI.getProgressBar(ctx, true);
-        }
+        private boolean finishedTask;
 
         @Override
         protected String doInBackground(String... params)
@@ -52,15 +47,17 @@ public class Web
                     catch(Exception e){Error.print(e);}
                 }
             }
-
         }
 
         @Override
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            if(pb != null)
-                UI.release(pb);
+            finishedTask = true;
         }
+
+        public boolean hasFinishedTask(){return finishedTask;}
+
+
     }
 }

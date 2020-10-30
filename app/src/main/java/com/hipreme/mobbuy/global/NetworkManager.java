@@ -130,20 +130,6 @@ public class NetworkManager
                 });
     }
 
-    /*public static boolean hasInternet()
-    {
-        Network network = cm.getActiveNetwork();
-        if(network == null)
-            return false;
-        else
-        {
-            NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
-            return capabilities != null &&
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)||
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);
-        }
-    }*/
 
     public static void registerNetworkCallback(String name, NetworkRequest req, NetworkCallback cb)
     {

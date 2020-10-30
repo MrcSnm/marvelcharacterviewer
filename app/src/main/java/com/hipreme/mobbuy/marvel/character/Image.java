@@ -21,4 +21,16 @@ public class Image
         catch (Exception e){Error.print(e, Image.class);}
     }
 
+    public String getImageUrl()
+    {
+        //This code is required if the the manifest don't have the value
+        //android:usesCleartextTraffic="true"
+        /*int index;
+        if((index = url.indexOf("http://")) != -1)
+        {
+            url = "https://"+ url.substring(index+"http://".length());
+        }*/
+        return url+"."+type;
+    }
+
 }

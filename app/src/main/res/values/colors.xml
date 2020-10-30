@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--
+    Color Palette based on Spider Man, probably the most famous Marvel hero
+    -->
+    <color name="colorPrimary">#902724</color>
+    <color name="colorPrimaryDark">#F23C27</color>
+    <color name="colorAccent">#1B729F</color>
+    <color name="colorAccentDark">#04806A</color>
+
+    <color name="colorBackground">#212121</color>
+
+    <color name="colorText">#BBBBBB</color>
+
 </resources>

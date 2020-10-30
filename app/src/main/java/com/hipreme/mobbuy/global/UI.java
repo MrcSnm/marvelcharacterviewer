@@ -23,7 +23,10 @@ public class UI
             pb.setIndeterminate(true);
         }
         else
+        {
             pb.setProgress(0);
+
+        }
         pb.setVisibility((show ? View.VISIBLE : View.INVISIBLE));
         return pb;
     }

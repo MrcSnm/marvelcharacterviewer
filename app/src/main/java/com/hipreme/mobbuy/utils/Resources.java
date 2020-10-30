@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 
+import com.hipreme.mobbuy.global.NetworkManager;
+
 public class Resources
 {
     private static boolean hasConnection;
@@ -14,7 +16,8 @@ public class Resources
     {
         NONE,
         MOBILE,
-        WIFI
+        WIFI,
+        ETHERNET
     }
     public static void registerContext(Context ctx){registeredContext = ctx;}
 
@@ -63,10 +66,14 @@ public class Resources
 
     public static NetworkConnection getNetworkConnectionType()
     {
-        if(registeredContext != null && hasNetworkConnection() && hasInternetConnection())
+        if(registeredContext != null)
         {
-            ConnectivityManager cm =(ConnectivityManager)registeredContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            return (cm.isActiveNetworkMetered() ? NetworkConnection.MOBILE : NetworkConnection.WIFI);
+            if(NetworkManager.isOnWifi())
+                return NetworkConnection.WIFI;
+            else if(NetworkManager.isOnEthernet())
+                return NetworkConnection.ETHERNET;
+            else if(NetworkManager.isOnMobileData())
+                return NetworkConnection.MOBILE;
         }
         return NetworkConnection.NONE;
     }

@@ -6,10 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="2dp"
-    />
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/border_background"
+            android:backgroundTint="@color/colorPrimaryDark"
+        >
+
+            <TextView
+                android:id="@+id/txtSelectedOption"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="5dp"
+                android:text="Selected Option" />
+
+        </FrameLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:weightSum="2"
+                android:baselineAligned="false"
+                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/border_background"
+            >
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:background="@drawable/border_background"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="1">
+                    <FrameLayout
+                        android:id="@+id/characterFrame"
+                        android:background="@color/colorAccent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <Button
+                            android:id="@+id/btnCharacter"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/colorAccent"
+
+                            android:text="Character"
+                        />
+                    </FrameLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_background"
+                    android:layout_weight="1">
+
+                    <FrameLayout
+                        android:id="@+id/favoritesFrame"
+                        android:background="@color/colorAccent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <Button
+                            android:id="@+id/btnFavorites"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/colorAccent"
+                            android:text="Favorites"
+                        />
+                    </FrameLayout>
+                </FrameLayout>
+            </LinearLayout>
+    </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/characterListView"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
