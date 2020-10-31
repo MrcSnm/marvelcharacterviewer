@@ -30,10 +30,11 @@ public class Storage
         c.toggleFavorite();
         if(favoritesJSON.contains(c))
         {
-            //Remove from favoriteList
+            favoritesJSON.remove(c);
             return false;
         }
         favoritesJSON.add(c);
+        System.out.println(c.name + " was added to favorites");
         return true;
     }
 
@@ -44,6 +45,8 @@ public class Storage
         for(int i = 0, len = favoritesJSON.size(); i <  len; i++)
         {
             toSave.append(favoritesJSON.get(i).objReference.toString());
+            System.out.println("Favorited: " + favoritesJSON.get(i).name);
+
             if(i+1 != len)
                 toSave.append("\n,");
         }
@@ -60,6 +63,12 @@ public class Storage
         {
             JSONObject obj = new JSONObject(json);
             favoritesJSON = ret = Character.getCharactersRaw(obj.getJSONArray(FAVORITES_NAME));
+
+            for(Character c : favoritesJSON)
+            {
+                System.out.println(c.name + " was loaded");
+                favoriteContent(c);
+            }
         }
         catch (Exception e){Error.print(e);return null;}
 

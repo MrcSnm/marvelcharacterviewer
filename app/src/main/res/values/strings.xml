@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mobbuy</string>
+    <string name="app_name">Marvel Character Viewer</string>
 
     <string name="marvel_public_key">317228c6171f40fa58b0880d6bf479de</string>
     <string name="marvel_base_url">https://gateway.marvel.com</string>

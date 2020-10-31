@@ -56,6 +56,13 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
     public void addCharacters(ArrayList<Character> chars)
     {
         characterList.addAll(chars);
+        notifyDataSetChanged();
+    }
+
+    public void setCharacters(ArrayList<Character> chars)
+    {
+        characterList = chars;
+        notifyDataSetChanged();
     }
 
     public static class CharacterView extends RecyclerView.ViewHolder
@@ -79,16 +86,19 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
                 {
                     int pos = getAdapterPosition();
                     Character c = charListView.characterList.get(pos);
-
-                    favoriteButton.setBackground(ResourcesCompat.getDrawable(
-                        v.getContext().getResources(),
-                            (c.isFavorited) ? R.drawable.ic_star_yellow_24dp :
-                            R.drawable.ic_star_border_black_24dp,
-                null));
-
                     Storage.favoriteContent(c);
+                    updateFavoriteButton(c, v);
                 }
             });
+        }
+
+        public void updateFavoriteButton(Character c, View v)
+        {
+            favoriteButton.setBackground(ResourcesCompat.getDrawable(
+                    v.getContext().getResources(),
+                    (c.isFavorited) ? R.drawable.ic_star_yellow_24dp :
+                            R.drawable.ic_star_border_black_24dp,
+                    null));
         }
     }
 }

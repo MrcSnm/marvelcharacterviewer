@@ -12,6 +12,7 @@ import com.hipreme.mobbuy.utils.Resources;
 public class GlobalState
 {
     private static boolean init;
+
     public static void initialize(@NonNull Context ctx)
     {
         if(init)
@@ -20,10 +21,18 @@ public class GlobalState
             return;
         }
         init = true;
+        //Initializes MD5 instance
         Digest.startMD5();
+
+        //Register the context for further use
         Resources.registerContext(ctx);
+
+        //Unused
         UI.start();
+
+        //Setup connection type checkers
         NetworkManager.startChecking(ctx);
+        //Load favorites from storage
         CharacterNavigator.loadFavorites();
     }
 

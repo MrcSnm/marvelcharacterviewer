@@ -1,36 +1,40 @@
 package com.hipreme.mobbuy.global;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ProgressBar;
 import androidx.core.util.Pools;
 
 public class UI
 {
-    protected static Pools.SimplePool<ProgressBar> progressBars;
+    //protected static Pools.SimplePool<SpannableString> stringPool;
     public static void start()
     {
-        progressBars = new Pools.SimplePool<>(8);
+        //stringPool= new Pools.SimplePool<>(128);
+
 
     }
 
-    public static ProgressBar getProgressBar(Context ctx, boolean show)
+    protected static SpannableString getSpannableString(String txt)
     {
-        ProgressBar pb = progressBars.acquire();
-        if(pb == null)
-        {
-            pb = new ProgressBar(ctx);
-            pb.setIndeterminate(true);
-        }
-        else
-        {
-            pb.setProgress(0);
+//        SpannableString ret = stringPool.acquire();
+        SpannableString ret = new SpannableString(txt);
+        return ret;
 
-        }
-        pb.setVisibility((show ? View.VISIBLE : View.INVISIBLE));
-        return pb;
+    }
+    public static SpannableString getUnderlinedText(CharSequence txt){return getUnderlinedText(txt.toString());}
+    public static SpannableString getUnderlinedText(String txt)
+    {
+        SpannableString ret = getSpannableString(txt);
+        ret.setSpan(new UnderlineSpan(), 0, txt.length(), 0);
+        return ret;
     }
 
-    public static void release(ProgressBar pb){progressBars.release(pb); pb.setVisibility(View.INVISIBLE);}
+    public static void release(SpannableString ss)
+    {
+        //stringPool.release(ss);
+    }
 
 }

@@ -1,16 +1,19 @@
 package com.hipreme.mobbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     }
     protected Options selectedOption;
 
+    protected ArrayList<ToggleButton> rgViewOptionToggleGroup;
+
 
     /*
         Guidelines for this class includes using the class from
@@ -58,32 +63,36 @@ public class MainActivity extends AppCompatActivity {
         callbacks for when the characters were loaded
      */
 
-    /**
-     * Make the view toggable, only one is able to be selected
-     */
-    static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(final RadioGroup radioGroup, final int i)
-        {
-            //radioGroup.
-            for (int j = 0; j < radioGroup.getChildCount(); j++) {
-                final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
-                view.setChecked(view.getId() == i);
-            }
-        }
-    };
+
 
 
     /**
-     * This method can only be used on character favorite,
-     * as the togglebutton is not direct child from radiogroup
+     * This method is a base method for activating character toggle and
+     * favorite toggle, each one must call this method first to activate
+     * radio group check
      * @param view
      */
-    public void onToggleCharacterFavorite(View view)
+    protected void onToggleCharacterFavorite(View view)
     {
         RadioGroup rg  = findViewById(R.id.rgViewOptionsToggle);
+        rg.check(0);
         rg.check(view.getId());
     }
+
+    public void onToggleCharacter(View v)
+    {
+        onToggleCharacterFavorite(v);
+        selectedOption = Options.CHARACTERS;
+        characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
+    }
+    public void onToggleFavorite(View v)
+    {
+        onToggleCharacterFavorite(v);
+        selectedOption = Options.FAVORITES;
+        characterListView.setCharacters(CharacterNavigator.getFavorites());
+
+    }
+
 
     protected void setFrameColor(boolean selected, Button btn, FrameLayout frame)
     {
@@ -107,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
     protected void layoutInitialization()
     {
         rgViewOptionsToggle = findViewById(R.id.rgViewOptionsToggle);
+        rgViewOptionToggleGroup = new ArrayList<>();
+
+        rgViewOptionToggleGroup.add((ToggleButton)findViewById(R.id.btnCharacter));
+        rgViewOptionToggleGroup.add((ToggleButton)findViewById(R.id.btnFavorites));
         recyclerView = findViewById(R.id.characterListView);
         recyclerView.setLayoutManager(gridLayoutManager = new GridLayoutManager(this, 2));
 
@@ -126,14 +139,45 @@ public class MainActivity extends AppCompatActivity {
                 totalItemCount = gridLayoutManager.getItemCount();
                 if(dy > 0) //Scroll up
                 {
-                    if(!CharacterNavigator.isLoading() && (totalItemCount - visibleItemCount) <= firstVisibleItemIndex+CharacterNavigator.LIMIT)
-                    {
+                    if(!CharacterNavigator.isLoading() && (firstVisibleItemIndex+ CharacterNavigator.LIMIT > totalItemCount))
                         loadCharacters();
-                    }
+                    //if(!CharacterNavigator.isLoading() && (totalItemCount - visibleItemCount) <= firstVisibleItemIndex+CharacterNavigator.LIMIT)
+                    //{
+                    //}
                 }
             }
         });
-        rgViewOptionsToggle.setOnCheckedChangeListener(ToggleListener);
+
+        /**
+         * Make the view toggable, only one is able to be selected
+         */
+        rgViewOptionsToggle.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(final RadioGroup radioGroup, final int i)
+            {
+                for (int j = 0; j < rgViewOptionToggleGroup.size(); j++)
+                {
+                    final ToggleButton view = rgViewOptionToggleGroup.get(j);
+                    boolean checkState = view.getId() == i;
+
+                    if(checkState && view.isChecked())
+                        continue;
+                    else if(checkState)
+                    {
+                        TextView txt = findViewById(R.id.txtSelectedOption);
+                        txt.setText(view.getText());
+
+                        view.setText(UI.getUnderlinedText(view.getText()));
+                    }
+                    else
+                    {
+                        view.setText(view.getText());
+                    }
+
+                    view.setChecked(checkState);
+                }
+            }
+        });
         recyclerView.setHasFixedSize(true);
 
         CharacterNavigator.setProgressBar((ProgressBar)findViewById(R.id.mainProgressBar));
@@ -178,6 +222,8 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onPause();
         GlobalState.onPause();
+        Storage.saveContent();
+
     }
 
     @Override
@@ -188,9 +234,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop()
+    protected void onDestroy()
     {
-        super.onStop();
+        super.onDestroy();
         Storage.saveContent();
     }
 }

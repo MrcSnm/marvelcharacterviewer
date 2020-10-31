@@ -31,14 +31,14 @@ public class CharacterNavigator
         Range range;
         ArrayList<Character> characters = new ArrayList<>(LIMIT);
 
-        public CharacterRange(ArrayList<Character> c)
+        public CharacterRange(ArrayList<Character> c, int offset)
         {
-            range = new Range(CURRENT_OFFSET, CURRENT_OFFSET+LIMIT);
+            range = new Range(offset, offset+LIMIT);
             characters.addAll(c);
         }
     }
 
-    private static ArrayList<Character> favorites = null; //Will only ever be used if favorites exists
+    private static ArrayList<Character> favorites = new ArrayList<>(); //Will only ever be used if favorites exists
 
     public static ArrayList<Character> getFavorites(){return favorites;}
     private static ArrayList<CharacterRange> navigatedOffsets = new ArrayList<>();
@@ -62,34 +62,45 @@ public class CharacterNavigator
 
     public static void setOrderBy(String orderBy){pagination.setOrderBy(orderBy);}
 
+    public static ArrayList<Character> getLoadedCharacters()
+    {
+        ArrayList<Character> ret = new ArrayList<>();
+        for(CharacterRange c : navigatedOffsets)
+        {
+            ret.addAll(c.characters);
+        }
+        return ret;
+    }
+
     public static boolean isLoading()
     {
-        return currentTask != null && currentTask.hasFinishedTask();
+        return currentTask != null && !currentTask.hasFinishedTask();
     }
 
     public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet)
     {
-        int rangeIndex;
-        if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET+1)) == -1)
-        {
+        //int rangeIndex;
+        //if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET+1)) == -1)
+        //{
             if(pb != null)
                 pb.setVisibility(View.VISIBLE);
+            final int currOffset = CURRENT_OFFSET;
             currentTask = JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
                         true, true, true), new Callback<Void, JSONObject>() {
                     @Override
                     public Void execute(JSONObject param)
                     {
                         ArrayList<Character> chars = Character.getCharacters(param);
-                        navigatedOffsets.add(new CharacterRange(chars));
+                        navigatedOffsets.add(new CharacterRange(chars, currOffset));
                         onGet.execute(chars);
                         currentTask = null;
                         pb.setVisibility(View.GONE);
                         return null;
                     }
                 });
-        }
-        else
-            onGet.execute(navigatedOffsets.get(rangeIndex).characters);
+        //}
+        //else
+          //  onGet.execute(navigatedOffsets.get(rangeIndex).characters);
         CURRENT_OFFSET+= LIMIT; //Needs to be instant for not having racing conditions
         pagination.setOffset(CURRENT_OFFSET);
     }
