@@ -33,7 +33,7 @@ public class GlobalState
         //Setup connection type checkers
         NetworkManager.startChecking(ctx);
         //Load favorites from storage
-        CharacterNavigator.loadFavorites();
+        Storage.loadFavorites();
     }
 
     public static void onPause()

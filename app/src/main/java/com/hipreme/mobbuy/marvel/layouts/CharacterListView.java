@@ -16,13 +16,14 @@ import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.character.Character;
+import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
+import com.hipreme.mobbuy.utils.Resources;
 
 import java.util.ArrayList;
 
 public class CharacterListView extends RecyclerView.Adapter<CharacterListView.CharacterView>
 {
     ArrayList<Character> characterList;
-    int characterCreated;
     Context context;
     public CharacterListView(ArrayList<Character> chars, Context ctx)
     {
@@ -46,6 +47,7 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
             .with(context)
             .load(c.thumbnail.getImageUrl())
             .into(holder.charImage);
+        holder.updateFavoriteButton(c);
     }
 
     @Override
@@ -87,15 +89,15 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
                     int pos = getAdapterPosition();
                     Character c = charListView.characterList.get(pos);
                     Storage.favoriteContent(c);
-                    updateFavoriteButton(c, v);
+                    updateFavoriteButton(c);
                 }
             });
         }
 
-        public void updateFavoriteButton(Character c, View v)
+        public void updateFavoriteButton(Character c)
         {
             favoriteButton.setBackground(ResourcesCompat.getDrawable(
-                    v.getContext().getResources(),
+                    Resources.getRegisteredContext().getResources(),
                     (c.isFavorited) ? R.drawable.ic_star_yellow_24dp :
                             R.drawable.ic_star_border_black_24dp,
                     null));

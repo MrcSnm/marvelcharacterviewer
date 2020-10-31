@@ -38,9 +38,6 @@ public class CharacterNavigator
         }
     }
 
-    private static ArrayList<Character> favorites = new ArrayList<>(); //Will only ever be used if favorites exists
-
-    public static ArrayList<Character> getFavorites(){return favorites;}
     private static ArrayList<CharacterRange> navigatedOffsets = new ArrayList<>();
     private static Pagination pagination = new Pagination(new Callback<String, String>() {
         @Override
@@ -107,13 +104,5 @@ public class CharacterNavigator
 
 
     public static void setProgressBar(ProgressBar progressBar){pb = progressBar;}
-
-    public static void loadFavorites()
-    {
-        if(Storage.favoriteExists() && favorites == null)
-        {
-            favorites = Storage.loadContent();
-        }
-    }
 
 }

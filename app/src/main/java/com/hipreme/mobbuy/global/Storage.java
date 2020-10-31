@@ -38,7 +38,7 @@ public class Storage
         return true;
     }
 
-    public static boolean saveContent()
+    public static boolean saveFavorites()
     {
         StringBuilder toSave = new StringBuilder("{\nfavorites:[");
 
@@ -55,7 +55,7 @@ public class Storage
         return true;
     }
 
-    public static ArrayList<Character> loadContent()
+    public static ArrayList<Character> loadFavorites()
     {
         ArrayList<Character> ret;
         String json = (favoriteText == null) ? FileUtils.readFileStreamed(FAVORITE_FILENAME) : favoriteText;
@@ -71,8 +71,10 @@ public class Storage
             }
         }
         catch (Exception e){Error.print(e);return null;}
-
         return ret;
-
     }
+    /**
+     * Gets the favorites, use loadFavorites instead for reading from file
+     */
+    public static ArrayList<Character> getFavorites(){return favoritesJSON;}
 }

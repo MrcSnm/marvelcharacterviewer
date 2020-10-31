@@ -89,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
     {
         onToggleCharacterFavorite(v);
         selectedOption = Options.FAVORITES;
-        characterListView.setCharacters(CharacterNavigator.getFavorites());
+        ArrayList<Character> favs = Storage.getFavorites();
+
+        for(Character c : favs)
+            System.out.println(c.name);
+        characterListView.setCharacters(favs);
 
     }
 
@@ -222,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onPause();
         GlobalState.onPause();
-        Storage.saveContent();
+        Storage.saveFavorites();
 
     }
 
@@ -237,6 +241,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy()
     {
         super.onDestroy();
-        Storage.saveContent();
+        Storage.saveFavorites();
     }
 }
