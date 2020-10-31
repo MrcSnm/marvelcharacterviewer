@@ -27,8 +27,12 @@ public class Storage
 
     public static boolean favoriteContent(Character c)
     {
+        c.toggleFavorite();
         if(favoritesJSON.contains(c))
+        {
+            //Remove from favoriteList
             return false;
+        }
         favoritesJSON.add(c);
         return true;
     }

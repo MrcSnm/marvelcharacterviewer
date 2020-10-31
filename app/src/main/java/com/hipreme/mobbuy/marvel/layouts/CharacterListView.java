@@ -9,12 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.R;
+import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.character.Character;
-import com.hipreme.mobbuy.marvel.character.Image;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
     @NonNull @Override public CharacterView onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
-        return new CharacterView(view);
+        return new CharacterView(view, this);
     }
 
     @Override
@@ -62,12 +63,32 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
         ImageView charImage;
         TextView charName;
         Button favoriteButton;
-        public CharacterView(View view)
+        CharacterListView charListView;
+        public CharacterView(View view, final CharacterListView charListView)
         {
             super(view);
             charImage = view.findViewById(R.id.imgItemView);
             charName = view.findViewById(R.id.txtItemTitle);
             favoriteButton = view.findViewById(R.id.btnItemFavorite);
+            this.charListView = charListView;
+
+
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    int pos = getAdapterPosition();
+                    Character c = charListView.characterList.get(pos);
+
+                    favoriteButton.setBackground(ResourcesCompat.getDrawable(
+                        v.getContext().getResources(),
+                            (c.isFavorited) ? R.drawable.ic_star_yellow_24dp :
+                            R.drawable.ic_star_border_black_24dp,
+                null));
+
+                    Storage.favoriteContent(c);
+                }
+            });
         }
     }
 }

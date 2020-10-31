@@ -36,6 +36,12 @@ public class Character
     public JSONObject objReference;
 
 
+    public boolean isFavorited = false;
+
+
+    public void toggleFavorite(){isFavorited = !isFavorited;}
+
+
     public Character(JSONObject o)
     {
         try

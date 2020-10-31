@@ -1,6 +1,9 @@
 package com.hipreme.mobbuy.marvel.character;
 
 
+import android.view.View;
+import android.widget.ProgressBar;
+
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.MarvelAPI;
@@ -17,7 +20,10 @@ import java.util.ArrayList;
 public class CharacterNavigator
 {
     private static int CURRENT_OFFSET = 0;
-    private static final int LIMIT = 20;
+    public static final int LIMIT = 20;
+    private static JSONUtils.JSONTask currentTask;
+
+    protected static ProgressBar pb;
 
     public static int getCurrentOffset(){return CURRENT_OFFSET;}
     protected static class CharacterRange
@@ -56,12 +62,19 @@ public class CharacterNavigator
 
     public static void setOrderBy(String orderBy){pagination.setOrderBy(orderBy);}
 
+    public static boolean isLoading()
+    {
+        return currentTask != null && currentTask.hasFinishedTask();
+    }
+
     public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet)
     {
         int rangeIndex;
-        if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET)) == -1)
+        if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET+1)) == -1)
         {
-            JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
+            if(pb != null)
+                pb.setVisibility(View.VISIBLE);
+            currentTask = JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
                         true, true, true), new Callback<Void, JSONObject>() {
                     @Override
                     public Void execute(JSONObject param)
@@ -69,6 +82,8 @@ public class CharacterNavigator
                         ArrayList<Character> chars = Character.getCharacters(param);
                         navigatedOffsets.add(new CharacterRange(chars));
                         onGet.execute(chars);
+                        currentTask = null;
+                        pb.setVisibility(View.GONE);
                         return null;
                     }
                 });
@@ -76,7 +91,11 @@ public class CharacterNavigator
         else
             onGet.execute(navigatedOffsets.get(rangeIndex).characters);
         CURRENT_OFFSET+= LIMIT; //Needs to be instant for not having racing conditions
+        pagination.setOffset(CURRENT_OFFSET);
     }
+
+
+    public static void setProgressBar(ProgressBar progressBar){pb = progressBar;}
 
     public static void loadFavorites()
     {

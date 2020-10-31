@@ -1,12 +1,5 @@
 package com.hipreme.mobbuy.utils;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.JsonReader;
-import android.view.View;
-import android.widget.ProgressBar;
-
-import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +7,7 @@ import org.json.JSONObject;
 
 public class JSONUtils
 {
-    private static class JSONTask extends Web.LoadURLTask<JSONObject>
+    public static class JSONTask extends Web.LoadURLTask<JSONObject>
     {
         Callback<Void, JSONObject> onDataLoad;
         public JSONTask(Callback<Void, JSONObject> cb)

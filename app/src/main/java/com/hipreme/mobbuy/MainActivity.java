@@ -6,9 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.hipreme.mobbuy.global.GlobalState;
 import com.hipreme.mobbuy.global.NetworkManager;
@@ -30,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
     protected RecyclerView recyclerView;
     protected GridLayoutManager gridLayoutManager;
     protected CharacterListView characterListView;
+    protected RadioGroup rgViewOptionsToggle;
+
+
+    protected int totalItemCount;
+    protected int visibleItemCount;
+    protected int firstVisibleItemIndex;
 
     enum Options
     {
@@ -48,12 +58,32 @@ public class MainActivity extends AppCompatActivity {
         callbacks for when the characters were loaded
      */
 
+    /**
+     * Make the view toggable, only one is able to be selected
+     */
+    static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(final RadioGroup radioGroup, final int i)
+        {
+            //radioGroup.
+            for (int j = 0; j < radioGroup.getChildCount(); j++) {
+                final ToggleButton view = (ToggleButton) radioGroup.getChildAt(j);
+                view.setChecked(view.getId() == i);
+            }
+        }
+    };
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
 
+    /**
+     * This method can only be used on character favorite,
+     * as the togglebutton is not direct child from radiogroup
+     * @param view
+     */
+    public void onToggleCharacterFavorite(View view)
+    {
+        RadioGroup rg  = findViewById(R.id.rgViewOptionsToggle);
+        rg.check(view.getId());
     }
-
 
     protected void setFrameColor(boolean selected, Button btn, FrameLayout frame)
     {
@@ -74,20 +104,13 @@ public class MainActivity extends AppCompatActivity {
         setFrameColor(selected, (Button)findViewById(Button_id), (FrameLayout)findViewById(FrameLayout_id));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        GlobalState.initialize(this);
-
+    protected void layoutInitialization()
+    {
+        rgViewOptionsToggle = findViewById(R.id.rgViewOptionsToggle);
         recyclerView = findViewById(R.id.characterListView);
         recyclerView.setLayoutManager(gridLayoutManager = new GridLayoutManager(this, 2));
+
         recyclerView.addItemDecoration(new SpaceItemDecoration(10));
-
-        recyclerView.setHasFixedSize(true);
-
-        final Context ctx = this;
-        CharacterNavigator.setOrderBy("name");
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -95,22 +118,61 @@ public class MainActivity extends AppCompatActivity {
             public void onScrolled(RecyclerView view, int dx, int dy)
             {
                 super.onScrolled(view, dx, dy);
+
+                firstVisibleItemIndex = gridLayoutManager.findFirstVisibleItemPosition();
+                visibleItemCount = gridLayoutManager.getChildCount();
+
+
+                totalItemCount = gridLayoutManager.getItemCount();
                 if(dy > 0) //Scroll up
                 {
-                    System.out.println(gridLayoutManager.getChildCount());
+                    if(!CharacterNavigator.isLoading() && (totalItemCount - visibleItemCount) <= firstVisibleItemIndex+CharacterNavigator.LIMIT)
+                    {
+                        loadCharacters();
+                    }
                 }
             }
         });
+        rgViewOptionsToggle.setOnCheckedChangeListener(ToggleListener);
+        recyclerView.setHasFixedSize(true);
+
+        CharacterNavigator.setProgressBar((ProgressBar)findViewById(R.id.mainProgressBar));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        GlobalState.initialize(this);
+
+
+        layoutInitialization();
+        CharacterNavigator.setOrderBy("name");
+
         CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
             @Override
             public Void execute(ArrayList<Character> param)
             {
-                characterListView = new CharacterListView(param, ctx);
-                recyclerView.setAdapter(characterListView);
+                characterListView = new CharacterListView(param, MainActivity.this);
+                recyclerView.setAdapter(characterListView); //Needs set adapter for the first load
                 return null;
             }
         });
     }
+
+
+    protected void loadCharacters()
+    {
+        CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
+            @Override
+            public Void execute(ArrayList<Character> param)
+            {
+                characterListView.addCharacters(param);
+                return null;
+            }
+        });
+    }
+
     @Override
     protected void onPause()
     {

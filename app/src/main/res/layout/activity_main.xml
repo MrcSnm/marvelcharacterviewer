@@ -33,12 +33,13 @@
         </FrameLayout>
 
         <RadioGroup
+            android:id="@+id/rgViewOptionsToggle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
         >
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:weightSum="2"
                 android:baselineAligned="false"
                 android:backgroundTint="@color/colorAccent"
@@ -55,14 +56,16 @@
                         android:background="@color/colorAccent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                        <Button
+                        <ToggleButton
                             android:id="@+id/btnCharacter"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/colorAccent"
-
-                            android:text="Character"
+                            android:textOn="Characters"
+                            android:textOff="Characters"
+                            android:checked="true"
+                            android:onClick="onToggleCharacterFavorite"
                         />
                     </FrameLayout>
                 </FrameLayout>
@@ -78,25 +81,44 @@
                         android:background="@color/colorAccent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-                        <Button
+                        <ToggleButton
                             android:id="@+id/btnFavorites"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:textOn="Favorites"
+                            android:textOff="Favorites"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/colorAccent"
                             android:text="Favorites"
+                            android:onClick="onToggleCharacterFavorite"
                         />
                     </FrameLayout>
                 </FrameLayout>
             </LinearLayout>
     </RadioGroup>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/characterListView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+
+        >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/characterListView"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_height="match_parent"/>
+
+            <ProgressBar
+                android:id="@+id/mainProgressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:elevation="10dp"
+                android:layout_marginBottom="50dp"
+                android:visibility="gone"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

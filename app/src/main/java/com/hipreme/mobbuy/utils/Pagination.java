@@ -1,5 +1,7 @@
 package com.hipreme.mobbuy.utils;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Pagination
@@ -50,6 +52,8 @@ public class Pagination
             p+= "&"+maxParamName+"="+maxItems;
         if(useOrder && !orderBy.equals(null))
             p+= "&"+orderByParamName+"="+orderBy;
+
+        Log.i("Pagination", p);
         return p;
     }
     public void setOffset(long offset)
