@@ -69,11 +69,14 @@ public class Storage
             JSONObject obj = new JSONObject(json);
             favoritesJSON = ret = Character.getCharactersRaw(obj.getJSONArray(FAVORITES_NAME));
 
+            System.out.println(ret.size());
+
             for(Character c : favoritesJSON)
             {
                 System.out.println(c.name + " was loaded");
                 favoriteContent(c);
             }
+            isDirty = false;
         }
         catch (Exception e){Error.print(e);return null;}
         return ret;

@@ -3,7 +3,9 @@ package com.hipreme.mobbuy.marvel.widgets;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.global.Storage;
@@ -13,19 +15,22 @@ import com.hipreme.mobbuy.marvel.character.Character;
 public class FavoriteButton
 {
 
-    public static void favoriteCharacter(Character c, Button b)
+    public static void favoriteCharacter(Character c, Button b, @Nullable  RecyclerView.Adapter adapter)
     {
         Storage.favoriteContent(c);
         updateButtonBackground(b, c);
+        if(adapter != null)
+            adapter.notifyDataSetChanged();
+
     }
 
-    public static void setupButton(final Button btn, final Character c)
+    public static void setupButton(final Button btn, final Character c, @Nullable final RecyclerView.Adapter adapter)
     {
         updateButtonBackground(btn, c);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favoriteCharacter(c, btn);
+                favoriteCharacter(c, btn, adapter);
             }
         });
     }

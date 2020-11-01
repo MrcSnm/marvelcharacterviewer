@@ -63,7 +63,7 @@ public class Web
                     toChomp+=",";
             }
         }
-        else
+        else if(params.length == 2)
             toChomp = params[1];
         return chompURLParams(params[0], toChomp);
 

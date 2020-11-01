@@ -53,7 +53,7 @@ public class ItemViewActivity extends SavingStateActivity
         txtItemDescription.setText(description);
 
         final Button btn =findViewById(R.id.btnItemFavorite);
-        FavoriteButton.setupButton(btn,GlobalState.currentViewingCharacter);
+        FavoriteButton.setupButton(btn,GlobalState.currentViewingCharacter, null);
 
 
         comics = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, true), (RecyclerView)findViewById(R.id.rvComics));

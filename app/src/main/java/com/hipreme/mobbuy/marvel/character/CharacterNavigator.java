@@ -75,6 +75,24 @@ public class CharacterNavigator
     }
 
     /**
+     * Used for getting only those which are needed
+     * @param charsRaw
+     * @return
+     */
+    public static ArrayList<Character> getUnfavoritedCharacters(ArrayList<Character> charsRaw)
+    {
+        ArrayList<Character> ret = new ArrayList<>();
+        ArrayList<Character> favs = Storage.getFavorites();
+
+        for(Character c : charsRaw)
+        {
+            if(!favs.contains(c))
+                ret.add(c);
+        }
+        return ret;
+    }
+
+    /**
      * This function needs to be called surround by an if(!isLoading()) getCharactersFromOffset
      * The check could be inside from itself, but it is less performant and it is less flexible,
      * although the offset only increases if the loading was succesful

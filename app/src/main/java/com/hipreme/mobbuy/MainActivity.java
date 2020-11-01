@@ -94,8 +94,6 @@ public class MainActivity extends SavingStateActivity{
         selectedOption = Options.FAVORITES;
         ArrayList<Character> favs = Storage.getFavorites();
 
-        for(Character c : favs)
-            System.out.println(c.name);
         characterListView.setCharacters(favs);
 
     }
@@ -119,7 +117,8 @@ public class MainActivity extends SavingStateActivity{
             public void onScrolled(RecyclerView view, int dx, int dy)
             {
                 super.onScrolled(view, dx, dy);
-
+                if(selectedOption == Options.FAVORITES)
+                    return;
                 firstVisibleItemIndex = gridLayoutManager.findFirstVisibleItemPosition();
                 visibleItemCount = gridLayoutManager.getChildCount();
 
@@ -179,15 +178,24 @@ public class MainActivity extends SavingStateActivity{
         layoutInitialization();
         CharacterNavigator.setOrderBy("name");
 
-        CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
-            @Override
-            public Void execute(ArrayList<Character> param)
-            {
-                characterListView = new CharacterListView(param, MainActivity.this);
-                recyclerView.setAdapter(characterListView); //Needs set adapter for the first load
-                return null;
-            }
-        });
+        if(Storage.favoriteExists())
+        {
+            characterListView = new CharacterListView(Storage.getFavorites(), MainActivity.this);
+            recyclerView.setAdapter(characterListView);
+            loadCharacters();
+        }
+        else
+        {
+            CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
+                @Override
+                public Void execute(ArrayList<Character> param)
+                {
+                    characterListView = new CharacterListView(param, MainActivity.this);
+                    recyclerView.setAdapter(characterListView); //Needs set adapter for the first load
+                    return null;
+                }
+            });
+        }
     }
 
 
@@ -197,7 +205,7 @@ public class MainActivity extends SavingStateActivity{
             @Override
             public Void execute(ArrayList<Character> param)
             {
-                characterListView.addCharacters(param);
+                characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
                 return null;
             }
         });

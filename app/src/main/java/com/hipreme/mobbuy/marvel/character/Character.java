@@ -41,6 +41,18 @@ public class Character
     public boolean isFavorited = false;
 
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o instanceof Character)
+        {
+            Character c = (Character)o;
+            return c.id == id;
+        }
+        else return super.equals(o);
+    }
+
+
     public void toggleFavorite(){isFavorited = !isFavorited;}
 
 

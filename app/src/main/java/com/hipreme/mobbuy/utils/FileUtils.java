@@ -30,6 +30,8 @@ public class FileUtils
     public static String readFileStreamed(String filename)
     {
         Context ctx = Resources.getRegisteredContext();
+        if(!FileUtils.fileExists(filename))
+            return "";
         try
         {
             FileInputStream f = ctx.openFileInput(filename);
@@ -46,6 +48,16 @@ public class FileUtils
         catch (Exception e){Error.print(e, FileUtils.class, "Could not read file " + filename);return "";}
     }
     public static String[] getFiles(){return Resources.getRegisteredContext().fileList();}
+
+    public static boolean fileExists(String filename)
+    {
+        for(String f : getFiles())
+        {
+            if(filename.equals(f))
+                return true;
+        }
+        return false;
+    }
 
 
     public static String linkToFile(String link)

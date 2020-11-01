@@ -18,7 +18,7 @@ public class JSONUtils
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            if(!result.equals(""))
+            if(result != null && !result.equals(""))
             {
                 try{resultStored= new JSONObject(result);}
                 catch(JSONException e){Error.print(e, JSONUtils.class);}
