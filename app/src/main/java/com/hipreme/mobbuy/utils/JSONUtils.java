@@ -18,10 +18,13 @@ public class JSONUtils
         protected void onPostExecute(String result)
         {
             super.onPostExecute(result);
-            try{resultStored= new JSONObject(result);}
-            catch(JSONException e){Error.print(e, JSONUtils.class);}
-            if(onDataLoad != null)
-                onDataLoad.execute(resultStored);
+            if(!result.equals(""))
+            {
+                try{resultStored= new JSONObject(result);}
+                catch(JSONException e){Error.print(e, JSONUtils.class);}
+                if(onDataLoad != null)
+                    onDataLoad.execute(resultStored);
+            }
         }
     }
     public static JSONTask getUrlJson(String url, Callback<Void, JSONObject> cb, String... cacheKeyChompParams)

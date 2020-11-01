@@ -5,9 +5,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,7 +13,7 @@ import com.hipreme.mobbuy.marvel.layouts.ComicSeriesListView;
 import com.hipreme.mobbuy.marvel.layouts.SummaryView;
 import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
 
-public class ItemViewActivity extends AppCompatActivity
+public class ItemViewActivity extends SavingStateActivity
 {
     TextView txtItemName;
     TextView txtItemDescription;

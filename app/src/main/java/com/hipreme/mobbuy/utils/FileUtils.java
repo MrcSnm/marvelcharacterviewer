@@ -33,7 +33,7 @@ public class FileUtils
         try
         {
             FileInputStream f = ctx.openFileInput(filename);
-            InputStreamReader input = new InputStreamReader(f, StandardCharsets.UTF_8);
+            InputStreamReader input = new InputStreamReader(f);
             StringBuilder bd = new StringBuilder();
 
             BufferedReader reader = new BufferedReader(input);
@@ -87,7 +87,6 @@ public class FileUtils
     public static String readCacheFile(String cacheFileName)
     {
         Context ctx = Resources.getRegisteredContext();
-        System.out.println(ctx.getCacheDir() + cacheFileName);
         File cacheFile = new File(ctx.getCacheDir(), cacheFileName);
         if(cacheFile.exists())
         {

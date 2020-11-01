@@ -53,7 +53,8 @@ public class Pagination
         if(useOrder && !orderBy.equals(null))
             p+= "&"+orderByParamName+"="+orderBy;
 
-        Log.i("Pagination", p);
+        if(Error.IS_VERBOSE) //Used as a debug flag right now
+            Log.i("Pagination", p);
         return p;
     }
     public void setOffset(long offset)

@@ -1,5 +1,7 @@
 package com.hipreme.mobbuy.marvel.character;
 
+import androidx.annotation.Nullable;
+
 import com.hipreme.mobbuy.marvel.character.lists.ComicList;
 import com.hipreme.mobbuy.marvel.character.lists.EventList;
 import com.hipreme.mobbuy.marvel.character.lists.SeriesList;
@@ -79,8 +81,10 @@ public class Character
         }
         return null;
     }
-    public static ArrayList<Character> getCharacters(JSONObject apiObj)
+    public static ArrayList<Character> getCharacters(@Nullable JSONObject apiObj)
     {
+        if(apiObj == null)
+            return null;
         try
         {
             JSONObject data = apiObj.getJSONObject(DATA);

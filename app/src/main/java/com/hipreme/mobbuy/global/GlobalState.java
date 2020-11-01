@@ -1,6 +1,8 @@
 package com.hipreme.mobbuy.global;
 
 import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.hipreme.mobbuy.utils.Error;
 import com.hipreme.mobbuy.utils.Digest;
@@ -32,7 +34,8 @@ public class GlobalState
         //Setup connection type checkers
         NetworkManager.startChecking(ctx);
         //Load favorites from storage
-        Storage.loadFavorites();
+        if(Storage.favoriteExists())
+            Storage.loadFavorites();
     }
 
     public static void onPause()

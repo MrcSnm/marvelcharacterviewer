@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 
+import com.hipreme.mobbuy.global.NetworkManager;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
 
@@ -77,9 +78,11 @@ public class Web
 
         protected String checkCache(String... urlAndToChomp)
         {
-            String url = chompURLParams(urlAndToChomp);
-            System.out.println("Cache = " + Storage.readFromCache(FileUtils.linkToFile(url)));
-
+            String url;
+            if(urlAndToChomp.length >= 2)
+                url = chompURLParams(urlAndToChomp);
+            else
+                url = urlAndToChomp[0];
             return Storage.readFromCache(FileUtils.linkToFile(url));
         }
 
@@ -89,6 +92,9 @@ public class Web
             String cache = checkCache(params);
             if(!cache.equals(""))
                 return cache;
+            //Check internet connection
+            if(!NetworkManager.hasInternetConnection())
+                return "";
             InputStream stream;
             URL link;
             BufferedReader r = null;

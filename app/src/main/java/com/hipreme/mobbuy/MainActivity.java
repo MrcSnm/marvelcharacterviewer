@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 import static com.hipreme.mobbuy.global.GlobalState.currentViewingCharacter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SavingStateActivity{
 
     protected RecyclerView recyclerView;
     protected GridLayoutManager gridLayoutManager;
@@ -201,28 +201,5 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
-    }
-
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        GlobalState.onPause();
-        Storage.saveFavorites();
-
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        GlobalState.onResume();
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        Storage.saveFavorites();
     }
 }

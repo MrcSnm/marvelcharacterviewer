@@ -74,6 +74,12 @@ public class CharacterNavigator
         return currentTask != null && !currentTask.hasFinishedTask();
     }
 
+    /**
+     * This function needs to be called surround by an if(!isLoading()) getCharactersFromOffset
+     * The check could be inside from itself, but it is less performant and it is less flexible,
+     * although the offset only increases if the loading was succesful
+     * @param onGet
+     */
     public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet)
     {
         //int rangeIndex;
@@ -88,18 +94,20 @@ public class CharacterNavigator
                     public Void execute(JSONObject param)
                     {
                         ArrayList<Character> chars = Character.getCharacters(param);
-                        navigatedOffsets.add(new CharacterRange(chars, currOffset));
-                        onGet.execute(chars);
-                        currentTask = null;
+                        if(chars != null)
+                        {
+                            navigatedOffsets.add(new CharacterRange(chars, currOffset));
+                            onGet.execute(chars);
+                            pagination.setOffset(CURRENT_OFFSET+= LIMIT); //Needs to be instant for not having racing conditions
+                        }
                         pb.setVisibility(View.GONE);
+                        currentTask = null;
                         return null;
                     }
                 }, "ts,apikey,hash");
         //}
         //else
           //  onGet.execute(navigatedOffsets.get(rangeIndex).characters);
-        CURRENT_OFFSET+= LIMIT; //Needs to be instant for not having racing conditions
-        pagination.setOffset(CURRENT_OFFSET);
     }
 
 

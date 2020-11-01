@@ -1,7 +1,5 @@
 package com.hipreme.mobbuy.global;
 
-import androidx.annotation.Nullable;
-
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.Error;
@@ -15,6 +13,7 @@ public class Storage
     public static final String FAVORITE_FILENAME = "FavoritedCharacters.json";
     public static final String FAVORITES_NAME = "favorites";
     private static String favoriteText = "";
+    private static boolean isDirty = false;
 
     private static ArrayList<Character> favoritesJSON = new ArrayList<>(); //To be appended at the end of program
 
@@ -29,6 +28,7 @@ public class Storage
 
     public static boolean favoriteContent(Character c)
     {
+        isDirty = true;
         c.toggleFavorite();
         if(favoritesJSON.contains(c))
         {
@@ -42,7 +42,9 @@ public class Storage
 
     public static boolean saveFavorites()
     {
-        StringBuilder toSave = new StringBuilder("{\nfavorites:[");
+        if(!isDirty)
+            return false;
+        StringBuilder toSave = new StringBuilder("{\"favorites\":[");
 
         for(int i = 0, len = favoritesJSON.size(); i <  len; i++)
         {
@@ -54,13 +56,14 @@ public class Storage
         }
         toSave.append("]}");
         FileUtils.saveFileStreamed(FAVORITE_FILENAME, toSave.toString());
+        isDirty = false;
         return true;
     }
 
     public static ArrayList<Character> loadFavorites()
     {
         ArrayList<Character> ret;
-        String json = (favoriteText == null) ? FileUtils.readFileStreamed(FAVORITE_FILENAME) : favoriteText;
+        String json = (favoriteText == null || favoriteText.equals("")) ? FileUtils.readFileStreamed(FAVORITE_FILENAME) : favoriteText;
         try
         {
             JSONObject obj = new JSONObject(json);
