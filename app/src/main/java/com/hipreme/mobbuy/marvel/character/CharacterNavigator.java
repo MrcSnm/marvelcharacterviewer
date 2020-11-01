@@ -94,7 +94,7 @@ public class CharacterNavigator
                         pb.setVisibility(View.GONE);
                         return null;
                     }
-                });
+                }, "ts,apikey,hash");
         //}
         //else
           //  onGet.execute(navigatedOffsets.get(rangeIndex).characters);

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.ObjectKey;
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.marvel.character.Character;
@@ -40,7 +41,7 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
     }
 
     @Override
-    public void onBindViewHolder(final @NonNull Comics_Series_View holder, int position)
+    public void onBindViewHolder(final @NonNull Comics_Series_View holder, final int position)
     {
         final MarvelSummary item;
         if(comic)
@@ -57,6 +58,8 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
                 Glide
                     .with(context)
                     .load(param.getImageUrl())
+                    .signature(new ObjectKey(param.getImageUrl()))
+                    .placeholder(R.drawable.ic_image_black_24dp)
                     .into(holder.summaryImage);
                 return null;
             }
@@ -81,6 +84,7 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
         public Comics_Series_View(View v)
         {
             super(v);
+
 
             summaryName = v.findViewById(R.id.txtComicsSeriesViewSummaryName);
             summaryImage = v.findViewById(R.id.imgComicsSeriesViewSummaryImage);

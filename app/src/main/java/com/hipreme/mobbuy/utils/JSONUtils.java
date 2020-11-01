@@ -24,9 +24,13 @@ public class JSONUtils
                 onDataLoad.execute(resultStored);
         }
     }
-    public static JSONTask getUrlJson(String url, Callback<Void, JSONObject> cb)
+    public static JSONTask getUrlJson(String url, Callback<Void, JSONObject> cb, String... cacheKeyChompParams)
     {
-        return (JSONTask)(new JSONTask(cb).execute(url));
+        String[] p = new String[cacheKeyChompParams.length+1];
+        p[0] = url;
+        for(int i = 1, len = p.length; i < len; i++)
+            p[i] = cacheKeyChompParams[i-1];
+        return (JSONTask)(new JSONTask(cb).execute(p));
     }
 
 }

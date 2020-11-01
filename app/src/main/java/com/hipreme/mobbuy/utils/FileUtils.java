@@ -47,6 +47,31 @@ public class FileUtils
     }
     public static String[] getFiles(){return Resources.getRegisteredContext().fileList();}
 
+
+    public static String linkToFile(String link)
+    {
+        String file;
+        file = link.replaceAll(":", "#");
+        file = file.replaceAll("/", "%");
+        file = file.replaceAll("\\?", "!");
+
+        assert(fileToLink(file).equals(link)):
+        "File to link does not return the same link generated on linkToFile";
+        return file;
+    }
+
+    public static String fileToLink(String file)
+    {
+        String link;
+        link = file.replaceAll("%", "/");
+        link = link.replaceAll("#", ":");
+        link = link.replaceAll("!", "?");
+
+        assert(linkToFile(link).equals(file)):
+                "Link to file does not return the same link generated on fileToLink";
+        return link;
+    }
+
     public static void saveCacheFile(String cacheFileName, String content)
     {
         try
@@ -62,6 +87,7 @@ public class FileUtils
     public static String readCacheFile(String cacheFileName)
     {
         Context ctx = Resources.getRegisteredContext();
+        System.out.println(ctx.getCacheDir() + cacheFileName);
         File cacheFile = new File(ctx.getCacheDir(), cacheFileName);
         if(cacheFile.exists())
         {
@@ -76,10 +102,6 @@ public class FileUtils
                 return bd.toString();
            }
            catch (Exception e){Error.print(e, FileUtils.class, "Could not read cache");}
-        }
-        else
-        {
-            Error.print("File does not exists");
         }
         return "";
     }

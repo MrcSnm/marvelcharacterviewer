@@ -1,5 +1,7 @@
 package com.hipreme.mobbuy.global;
 
+import androidx.annotation.Nullable;
+
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.Error;
@@ -73,6 +75,23 @@ public class Storage
         catch (Exception e){Error.print(e);return null;}
         return ret;
     }
+
+    /**
+     *
+     * @param contentKey Cache name
+     * @param contentValue Content of the cache
+     */
+    public static void cacheContent(String contentKey, String contentValue)
+    {
+        FileUtils.saveCacheFile(contentKey, contentValue);
+    }
+
+    public static String readFromCache(String contentKey)
+    {
+        return FileUtils.readCacheFile(contentKey);
+    }
+
+
     /**
      * Gets the favorites, use loadFavorites instead for reading from file
      */

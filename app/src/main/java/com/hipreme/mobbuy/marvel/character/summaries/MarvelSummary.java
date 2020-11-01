@@ -47,9 +47,14 @@ public class MarvelSummary
 
     public void tryLoadThumbnail(final Callback<Void, Image> onImageLoad)
     {
-        if(thumbnail != null || currentTask != null)
+        if(currentTask != null)
             return;
-        JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), new Callback<Void, JSONObject>()
+        else if(thumbnail != null)
+        {
+            onImageLoad.execute(thumbnail);
+        }
+        else
+            currentTask = JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), new Callback<Void, JSONObject>()
         {
             @Override
             public Void execute(JSONObject param)
