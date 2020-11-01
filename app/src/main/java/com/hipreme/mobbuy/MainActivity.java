@@ -25,6 +25,7 @@ import com.hipreme.mobbuy.global.UI;
 import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.marvel.layouts.CharacterListView;
 import com.hipreme.mobbuy.marvel.layouts.SpaceItemDecoration;
+import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
 import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.Digest;
 import com.hipreme.mobbuy.marvel.MarvelAPI;

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.R;
+import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.marvel.character.summaries.MarvelSummary;
 
@@ -32,7 +33,7 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
     @Override
     public Comics_Series_View onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_layout, parent);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.comic_series_layout, parent, false);
         return new Comics_Series_View(v);
     }
 
@@ -46,7 +47,7 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
             item = character.series.items.get(position);
         Glide
             .with(context)
-            .load(item.resourceURI)
+            .load(item.resourceURI+MarvelAPI.generateApiKeyString())
             .into(holder.summaryImage);
         holder.summaryName.setText(item.name);
     }
@@ -71,6 +72,8 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
 
             summaryName = v.findViewById(R.id.txtComicsSeriesViewSummaryName);
             summaryImage = v.findViewById(R.id.imgComicsSeriesViewSummaryImage);
+
+
         }
     }
 }

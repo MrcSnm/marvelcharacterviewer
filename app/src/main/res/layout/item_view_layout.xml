@@ -22,17 +22,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"/>
-        <TextView
-            android:id="@+id/txtItemName"
-            android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
+
+        <HorizontalScrollView
+            android:layout_width="250dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Character Name"
-        />
+        >
+            <TextView
+                android:id="@+id/txtItemName"
+                android:drawableLeft="@drawable/ic_chevron_left_black_24dp"
+                android:textStyle="bold"
+                android:textSize="26dp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Character Name"
+            />
+        </HorizontalScrollView>
         <Button
             android:id="@+id/btnItemFavorite"
             android:layout_width="40dp"
@@ -53,23 +61,25 @@
         android:layout_width="match_parent"
         android:layout_margin="14dp"
         android:layout_gravity="center_vertical|end"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:text="Character description"
     />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:text="@string/Comics"
-        android:textColor="#000"
     />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
         >
@@ -85,7 +95,7 @@
                 android:layout_height="match_parent"
             />
 
-        </FrameLayout>
+        </LinearLayout>
     </ScrollView>
 
 

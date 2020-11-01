@@ -33,6 +33,12 @@ public class MarvelAPI {
             };
     }
 
+    public static @NonNull String generateApiKeyString()
+    {
+        String[] s = generateApikey();
+        return "?ts="+s[0] +"&apikey="+s[1]+"&hash="+s[2];
+    }
+
     public static @NonNull String getFromPublicPath(String baseName)
     {
         String[] apiKey = generateApikey();

@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.global.GlobalState;
 import com.hipreme.mobbuy.marvel.layouts.ComicSeriesListView;
 import com.hipreme.mobbuy.marvel.layouts.SummaryView;
+import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
 
 public class ItemViewActivity extends AppCompatActivity
 {
@@ -47,14 +48,15 @@ public class ItemViewActivity extends AppCompatActivity
             .with(this)
             .load(GlobalState.currentViewingCharacter.thumbnail.getImageUrl())
             .into(imgItemView);
-        txtItemDescription.setText(GlobalState.currentViewingCharacter.description);
 
-        ((Button)findViewById(R.id.btnItemFavorite)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        String description = GlobalState.currentViewingCharacter.description;
 
-            }
-        });
+        if(description.equals(""))
+            description = "No information found about this character";
+        txtItemDescription.setText(description);
+
+        final Button btn =findViewById(R.id.btnItemFavorite);
+        FavoriteButton.setupButton(btn,GlobalState.currentViewingCharacter);
 
 
         comics = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, true), (RecyclerView)findViewById(R.id.rvComics));
