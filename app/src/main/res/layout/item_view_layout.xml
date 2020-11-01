@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="360dp"
         android:background="@drawable/border_top_background"
 
         style="@style/CardView.Dark"
@@ -56,23 +56,20 @@
     </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/txtItemDescription"
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
         android:layout_margin="14dp"
-        android:layout_gravity="center_vertical|end"
-        android:layout_height="100dp"
-        android:text="Character description"
-    />
+    >
+        <TextView
+            android:id="@+id/txtItemDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Character description"
+        />
+    </ScrollView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:text="@string/Comics"
-    />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -83,10 +80,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
         >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="@string/Comics"
+            />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvComics"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+            />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="@string/Series"
             />
 
             <androidx.recyclerview.widget.RecyclerView

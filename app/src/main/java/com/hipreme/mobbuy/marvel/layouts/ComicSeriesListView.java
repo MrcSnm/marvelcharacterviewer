@@ -14,7 +14,9 @@ import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.marvel.character.Character;
+import com.hipreme.mobbuy.marvel.character.Image;
 import com.hipreme.mobbuy.marvel.character.summaries.MarvelSummary;
+import com.hipreme.mobbuy.utils.Callback;
 
 public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListView.Comics_Series_View>
 {
@@ -38,17 +40,27 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Comics_Series_View holder, int position)
+    public void onBindViewHolder(final @NonNull Comics_Series_View holder, int position)
     {
-        MarvelSummary item;
+        final MarvelSummary item;
         if(comic)
             item = character.comics.items.get(position);
         else
             item = character.series.items.get(position);
-        Glide
-            .with(context)
-            .load(item.resourceURI+MarvelAPI.generateApiKeyString())
-            .into(holder.summaryImage);
+
+
+
+        item.tryLoadThumbnail(new Callback<Void, Image>() {
+            @Override
+            public Void execute(Image param)
+            {
+                Glide
+                    .with(context)
+                    .load(param.getImageUrl())
+                    .into(holder.summaryImage);
+                return null;
+            }
+        });
         holder.summaryName.setText(item.name);
     }
 
