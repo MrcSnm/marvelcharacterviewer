@@ -1,17 +1,16 @@
 package com.hipreme.mobbuy.global;
 
 import android.content.Context;
-import android.net.Network;
-
 import androidx.annotation.NonNull;
 import com.hipreme.mobbuy.utils.Error;
-import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.utils.Digest;
 import com.hipreme.mobbuy.utils.Resources;
+import com.hipreme.mobbuy.marvel.character.Character;
 
 public class GlobalState
 {
     private static boolean init;
+    public static Character currentViewingCharacter = null;
 
     public static void initialize(@NonNull Context ctx)
     {

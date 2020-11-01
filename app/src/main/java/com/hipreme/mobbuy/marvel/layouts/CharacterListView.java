@@ -1,6 +1,7 @@
 package com.hipreme.mobbuy.marvel.layouts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hipreme.mobbuy.ItemViewActivity;
 import com.hipreme.mobbuy.R;
+import com.hipreme.mobbuy.global.GlobalState;
 import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.character.Character;
-import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.utils.Resources;
 
 import java.util.ArrayList;
@@ -81,6 +83,24 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
             favoriteButton = view.findViewById(R.id.btnItemFavorite);
             this.charListView = charListView;
 
+
+
+            view.setOnClickListener(new View.OnClickListener()
+            {
+                /**
+                 * Got to the detail page
+                 * @param v
+                 */
+                @Override
+                public void onClick(View v)
+                {
+
+                    Intent intent = new Intent(v.getContext(), ItemViewActivity.class);
+                    //intent.putExtra()
+                    GlobalState.currentViewingCharacter = charListView.characterList.get(getAdapterPosition());
+                    v.getContext().startActivity(intent);
+                }
+            });
 
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -32,6 +32,8 @@ import com.hipreme.mobbuy.utils.Resources;
 
 import java.util.ArrayList;
 
+import static com.hipreme.mobbuy.global.GlobalState.currentViewingCharacter;
+
 public class MainActivity extends AppCompatActivity {
 
     protected RecyclerView recyclerView;
@@ -98,25 +100,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    protected void setFrameColor(boolean selected, Button btn, FrameLayout frame)
-    {
-        if(selected)
-        {
-            frame.setBackgroundColor(getResources().getColor(R.color.colorAccentDark, null));
-            btn.setBackgroundColor(getResources().getColor(R.color.colorAccentDark, null));
-        }
-        else
-        {
-            frame.setBackgroundColor(getResources().getColor(R.color.colorAccent, null));
-            btn.setBackgroundColor(getResources().getColor(R.color.colorAccent, null));
-        }
-    }
-
-    protected void setFrameColor(boolean selected, int Button_id, int FrameLayout_id)
-    {
-        setFrameColor(selected, (Button)findViewById(Button_id), (FrameLayout)findViewById(FrameLayout_id));
-    }
-
     protected void layoutInitialization()
     {
         rgViewOptionsToggle = findViewById(R.id.rgViewOptionsToggle);
@@ -145,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if(!CharacterNavigator.isLoading() && (firstVisibleItemIndex+ CharacterNavigator.LIMIT > totalItemCount))
                         loadCharacters();
-                    //if(!CharacterNavigator.isLoading() && (totalItemCount - visibleItemCount) <= firstVisibleItemIndex+CharacterNavigator.LIMIT)
-                    //{
-                    //}
                 }
             }
         });
@@ -185,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         CharacterNavigator.setProgressBar((ProgressBar)findViewById(R.id.mainProgressBar));
+        currentViewingCharacter = null;
     }
 
     @Override
