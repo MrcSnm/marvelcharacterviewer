@@ -79,7 +79,7 @@ public class Storage
             isDirty = false;
         }
         catch (Exception e){Error.print(e);return null;}
-        return ret;
+        return (ArrayList<Character>)ret.clone();
     }
 
     /**
@@ -101,5 +101,5 @@ public class Storage
     /**
      * Gets the favorites, use loadFavorites instead for reading from file
      */
-    public static ArrayList<Character> getFavorites(){return favoritesJSON;}
+    public static ArrayList<Character> getFavorites(){return (ArrayList<Character>)favoritesJSON.clone();}
 }
