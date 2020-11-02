@@ -61,7 +61,6 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
                         holder.summaryImage,
                         param.getImageUrl(),
                         true);
-                System.out.println("Summary url: " + param.getImageUrl());
                 return null;
             }
         });
