@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.global.Storage;
+import com.hipreme.mobbuy.marvel.character.Image;
+import com.hipreme.mobbuy.marvel.character.summaries.ComicSummary;
+import com.hipreme.mobbuy.marvel.character.summaries.SeriesSummary;
+import com.hipreme.mobbuy.utils.Callback;
+import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.Resources;
 import com.hipreme.mobbuy.marvel.character.Character;
 
@@ -18,6 +23,7 @@ public class FavoriteButton
     public static void favoriteCharacter(Character c, Button b, @Nullable  RecyclerView.Adapter adapter)
     {
         Storage.favoriteContent(c);
+        saveImagesAsUserData(c);
         updateButtonBackground(b, c);
         if(adapter != null)
             adapter.notifyDataSetChanged();
@@ -41,5 +47,36 @@ public class FavoriteButton
                 (c.isFavorited) ? R.drawable.ic_star_yellow_24dp :
                         R.drawable.ic_star_border_black_24dp,
                 null));
+    }
+
+    public static void saveImagesAsUserData(Character c)
+    {
+        FileUtils.saveBitmapFromURL(c.thumbnail.getImageUrl());
+
+        for(ComicSummary cs : c.comics.items)
+        {
+            cs.tryLoadThumbnail(new Callback<Void, Image>() {
+                @Override
+                public Void execute(Image param)
+                {
+                    FileUtils.saveBitmapFromURL(param.getImageUrl());
+                    return null;
+                }
+            });
+        }
+
+        for(SeriesSummary ss : c.series.items)
+        {
+            ss.tryLoadThumbnail(new Callback<Void, Image>() {
+                @Override
+                public Void execute(Image param)
+                {
+                    FileUtils.saveBitmapFromURL(param.getImageUrl());
+                    return null;
+                }
+            });
+        }
+        FileUtils.saveBitmapFromURL(c.thumbnail.getImageUrl());
+
     }
 }

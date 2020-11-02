@@ -1,7 +1,18 @@
 package com.hipreme.mobbuy.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -115,6 +126,50 @@ public class FileUtils
            catch (Exception e){Error.print(e, FileUtils.class, "Could not read cache");}
         }
         return "";
+    }
+
+
+    public static void saveBitmapFromURL(final String url)
+    {
+        Glide
+            .with(Resources.getRegisteredContext())
+            .asBitmap()
+            .load(url)
+            .into(new CustomTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    saveBitmap(linkToFile(url), resource);
+                }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                }
+            });
+    }
+
+    public static Bitmap loadBitmap(String filename)
+    {
+        return BitmapFactory.decodeFile(filename);
+    }
+
+
+    /**
+     * Glide is a dependency
+     * @param b
+     */
+    public static boolean saveBitmap(String filename, Bitmap b)
+    {
+        FileOutputStream stream;
+        Context ctx = Resources.getRegisteredContext();
+        try
+        {
+            stream = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
+            b.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.close();
+        }
+        catch (Exception e){Error.print(e);}
+        return false;
     }
 
 

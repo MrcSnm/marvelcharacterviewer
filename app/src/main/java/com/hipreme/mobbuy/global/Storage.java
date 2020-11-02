@@ -69,11 +69,10 @@ public class Storage
         {
             JSONObject obj = new JSONObject(json);
             ret = Character.getCharactersRaw(obj.getJSONArray(FAVORITES_NAME));
-
-            System.out.println("This is the greatest line on the storage for checking what is happening");
             for(Character c : ret)
             {
-                favoriteContent(c);
+                if(!c.isFavorited)
+                    favoriteContent(c);
             }
             isDirty = false;
         }

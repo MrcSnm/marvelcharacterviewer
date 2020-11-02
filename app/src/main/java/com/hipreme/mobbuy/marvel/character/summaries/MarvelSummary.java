@@ -24,7 +24,7 @@ public class MarvelSummary
     public String resourceURI;
     public String name;
 
-    protected Image thumbnail;
+    public Image thumbnail;
 
     protected boolean hasLoadedThumbnail = false;
     protected JSONUtils.JSONTask currentTask;

@@ -20,6 +20,8 @@ import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
+import com.hipreme.mobbuy.utils.FileUtils;
+import com.hipreme.mobbuy.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,18 +42,16 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
         return new CharacterView(view, this);
     }
+    public Character getCharacterAt(int pos){return characterList.get(pos);}
 
     @Override
     public void onBindViewHolder(@NonNull CharacterView holder, int i)
     {
         Character c = characterList.get(i);
         holder.charName.setText(c.name);
-        Glide
-            .with(context)
-            .load(c.thumbnail.getImageUrl())
-            .into(holder.charImage);
-        FavoriteButton.setupButton(holder.favoriteButton, c, this);
 
+        ImageUtils.loadImageInto(context, holder.charImage, c.thumbnail.getImageUrl(), true);
+        FavoriteButton.setupButton(holder.favoriteButton, c, this);
     }
 
     @Override

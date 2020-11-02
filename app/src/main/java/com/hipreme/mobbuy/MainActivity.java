@@ -68,6 +68,13 @@ public class MainActivity extends SavingStateActivity{
 
 
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        updateRecyclerView(); //-> Updates recyclerview based on other activities;
+    }
+
 
     /**
      * This method is a base method for activating character toggle and
@@ -199,6 +206,18 @@ public class MainActivity extends SavingStateActivity{
         }
     }
 
+    protected void updateRecyclerView()
+    {
+        if(recyclerView != null && characterListView != null)
+            for(int i = 0, len = recyclerView.getChildCount(); i < len; i++)
+            {
+                RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(recyclerView.getChildAt(i));
+
+                CharacterListView.CharacterView v = (CharacterListView.CharacterView)holder;
+                FavoriteButton.updateButtonBackground(v.favoriteButton, characterListView.getCharacterAt(v.getAdapterPosition()));
+            }
+    }
+
 
     protected void loadCharacters()
     {
@@ -207,13 +226,14 @@ public class MainActivity extends SavingStateActivity{
             public Void execute(ArrayList<Character> param)
             {
                 //Always includes favorites
-                ArrayList<Character> chars = Storage.getFavorites();
+/*                ArrayList<Character> chars = Storage.getFavorites();
                 if(selectedOption != Options.FAVORITES)
                 {
+
                     chars.addAll(CharacterNavigator.getUnfavoritedCharacters
                             (CharacterNavigator.getLoadedCharacters()));
-                }
-                characterListView.setCharacters(chars);
+                }*/
+                characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
                 return null;
             }
         });
