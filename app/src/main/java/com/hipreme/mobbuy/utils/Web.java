@@ -40,7 +40,7 @@ public class Web
                 int cutToIndex = url.indexOf("&", index);
                 if (cutToIndex == -1)
                     cutToIndex = url.length();
-                url = url.substring(0, index) + url.substring(cutToIndex + 1);
+                url = url.substring(0, index) + url.substring((cutToIndex == url.length()) ? cutToIndex : cutToIndex + 1);
             }
         }
         return url;

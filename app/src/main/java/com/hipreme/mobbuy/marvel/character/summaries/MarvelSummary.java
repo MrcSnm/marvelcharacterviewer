@@ -48,31 +48,38 @@ public class MarvelSummary
     public void tryLoadThumbnail(final Callback<Void, Image> onImageLoad)
     {
         if(currentTask != null)
+        {
+            currentTask.cancel(true);
+            currentTask = null;
+            tryLoadThumbnail(onImageLoad);
             return;
+        }
         else if(thumbnail != null)
         {
             onImageLoad.execute(thumbnail);
         }
         else
-            currentTask = JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), new Callback<Void, JSONObject>()
         {
-            @Override
-            public Void execute(JSONObject param)
+            currentTask = JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), new Callback<Void, JSONObject>()
             {
-                try
+                @Override
+                public Void execute(JSONObject param)
                 {
-                    thumbnail = new Image(param.getJSONObject(URI_DATA)
-                            .getJSONArray(URI_RESULTS)
-                            .getJSONObject(URI_INDEX)
-                            .getJSONObject(URI_THUMBNAIL));
-                    hasLoadedThumbnail = true;
-                    onImageLoad.execute(thumbnail);
-                    currentTask = null;
+                    try
+                    {
+                        thumbnail = new Image(param.getJSONObject(URI_DATA)
+                                .getJSONArray(URI_RESULTS)
+                                .getJSONObject(URI_INDEX)
+                                .getJSONObject(URI_THUMBNAIL));
+                        hasLoadedThumbnail = true;
+                        onImageLoad.execute(thumbnail);
+                        currentTask = null;
+                    }
+                    catch (Exception e){Error.print(e);hasLoadedThumbnail =false;}
+                    return null;
                 }
-                catch (Exception e){Error.print(e);hasLoadedThumbnail =false;}
-                return null;
-            }
-        });
+            }, "ts,apikey,hash");
+        }
     }
 
 

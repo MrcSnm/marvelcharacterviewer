@@ -150,7 +150,11 @@ public class FileUtils
 
     public static Bitmap loadBitmap(String filename)
     {
-        return BitmapFactory.decodeFile(filename);
+        if(fileExists(filename))
+            return BitmapFactory.decodeFile(Resources.getRegisteredContext().getFilesDir()+"/"+filename);
+        else
+
+            return null;
     }
 
 

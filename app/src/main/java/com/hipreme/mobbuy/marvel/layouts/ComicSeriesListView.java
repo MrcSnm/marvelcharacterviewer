@@ -18,6 +18,7 @@ import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.marvel.character.Image;
 import com.hipreme.mobbuy.marvel.character.summaries.MarvelSummary;
 import com.hipreme.mobbuy.utils.Callback;
+import com.hipreme.mobbuy.utils.ImageUtils;
 
 public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListView.Comics_Series_View>
 {
@@ -55,12 +56,12 @@ public class ComicSeriesListView extends RecyclerView.Adapter<ComicSeriesListVie
             @Override
             public Void execute(Image param)
             {
-                Glide
-                    .with(context)
-                    .load(param.getImageUrl())
-                    .signature(new ObjectKey(param.getImageUrl()))
-                    .placeholder(R.drawable.ic_image_black_24dp)
-                    .into(holder.summaryImage);
+
+                ImageUtils.loadImageInto(context,
+                        holder.summaryImage,
+                        param.getImageUrl(),
+                        true);
+                System.out.println("Summary url: " + param.getImageUrl());
                 return null;
             }
         });

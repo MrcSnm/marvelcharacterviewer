@@ -12,6 +12,7 @@ import com.hipreme.mobbuy.global.GlobalState;
 import com.hipreme.mobbuy.marvel.layouts.ComicSeriesListView;
 import com.hipreme.mobbuy.marvel.layouts.SummaryView;
 import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
+import com.hipreme.mobbuy.utils.ImageUtils;
 
 public class ItemViewActivity extends SavingStateActivity
 {
@@ -41,10 +42,10 @@ public class ItemViewActivity extends SavingStateActivity
         });
 
 
-        Glide
-            .with(this)
-            .load(GlobalState.currentViewingCharacter.thumbnail.getImageUrl())
-            .into(imgItemView);
+        ImageUtils.loadImageInto(this
+                , imgItemView
+                , GlobalState.currentViewingCharacter.thumbnail.getImageUrl(),
+                true);
 
         String description = GlobalState.currentViewingCharacter.description;
 

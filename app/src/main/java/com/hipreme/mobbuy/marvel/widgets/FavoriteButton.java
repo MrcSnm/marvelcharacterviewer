@@ -51,7 +51,8 @@ public class FavoriteButton
 
     public static void saveImagesAsUserData(Character c)
     {
-        FileUtils.saveBitmapFromURL(c.thumbnail.getImageUrl());
+        if(c.thumbnail != null)
+            FileUtils.saveBitmapFromURL(c.thumbnail.getImageUrl());
 
         for(ComicSummary cs : c.comics.items)
         {
@@ -76,7 +77,5 @@ public class FavoriteButton
                 }
             });
         }
-        FileUtils.saveBitmapFromURL(c.thumbnail.getImageUrl());
-
     }
 }
