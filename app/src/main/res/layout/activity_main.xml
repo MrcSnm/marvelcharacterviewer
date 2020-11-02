@@ -6,119 +6,124 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBackground"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/border_background"
-            android:backgroundTint="@color/colorPrimaryDark"
-        >
-
-            <TextView
-                android:id="@+id/txtSelectedOption"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="5dp"
-                android:text="Characters" />
-
-        </FrameLayout>
-
-        <RadioGroup
-            android:id="@+id/rgViewOptionsToggle"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-        >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="2"
-                android:baselineAligned="false"
-                android:backgroundTint="@color/colorAccent"
-                android:background="@drawable/border_background"
-            >
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:background="@drawable/border_background"
-                    android:layout_height="match_parent"
-
-                    android:layout_weight="1">
-                    <FrameLayout
-                        android:id="@+id/characterFrame"
-                        android:background="@color/colorAccent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <ToggleButton
-                            android:id="@+id/btnCharacter"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/toggle_button"
-                            android:textOn="Characters"
-                            android:textOff="Characters"
-                            android:checked="true"
-                            android:onClick="onToggleCharacter"
-                        />
-                    </FrameLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/border_background"
-                    android:layout_weight="1">
-
-                    <FrameLayout
-                        android:id="@+id/favoritesFrame"
-                        android:background="@color/colorAccent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <ToggleButton
-                            android:id="@+id/btnFavorites"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textOn="Favorites"
-                            android:textOff="Favorites"
-                            android:layout_gravity="center"
-                            android:background="@drawable/toggle_button"
-                            android:text="Favorites"
-                            android:onClick="onToggleFavorite"
-                        />
-                    </FrameLayout>
-                </FrameLayout>
-            </LinearLayout>
-    </RadioGroup>
-
-        <FrameLayout
+        android:layout_height="wrap_content"
+    >
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorBackground"
+            android:orientation="vertical">
 
-        >
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/characterListView"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_height="match_parent"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/border_background"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                >
 
-            <ProgressBar
-                android:id="@+id/mainProgressBar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:elevation="10dp"
-                android:layout_marginBottom="50dp"
-                android:visibility="gone"
-                />
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/txtSelectedOption"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Characters" />
 
+                </FrameLayout>
+
+                <RadioGroup
+                    android:id="@+id/rgViewOptionsToggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:weightSum="2"
+                        android:baselineAligned="false"
+                        android:backgroundTint="@color/colorAccent"
+                        android:background="@drawable/border_background"
+                    >
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:background="@drawable/border_background"
+                            android:layout_height="match_parent"
+
+                            android:layout_weight="1">
+                            <FrameLayout
+                                android:id="@+id/characterFrame"
+                                android:background="@color/colorAccent"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <ToggleButton
+                                    android:id="@+id/btnCharacter"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/toggle_button"
+                                    android:textOn="Characters"
+                                    android:textOff="Characters"
+                                    android:checked="true"
+                                    android:onClick="onToggleCharacter"
+                                />
+                            </FrameLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/border_background"
+                            android:layout_weight="1">
+
+                            <FrameLayout
+                                android:id="@+id/favoritesFrame"
+                                android:background="@color/colorAccent"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <ToggleButton
+                                    android:id="@+id/btnFavorites"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textOn="Favorites"
+                                    android:textOff="Favorites"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/toggle_button"
+                                    android:text="Favorites"
+                                    android:onClick="onToggleFavorite"
+                                />
+                            </FrameLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+            </RadioGroup>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/characterListView"
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_height="match_parent"/>
+
+                    <ProgressBar
+                        android:id="@+id/mainProgressBar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        android:layout_marginBottom="50dp"
+                        android:visibility="gone"
+                        />
+                </FrameLayout>
     </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

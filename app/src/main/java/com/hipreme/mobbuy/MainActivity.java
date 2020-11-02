@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -180,6 +181,24 @@ public class MainActivity extends SavingStateActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GlobalState.initialize(this);
+
+        final SwipeRefreshLayout refreshLayout = findViewById(R.id.pullToRefresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh()
+            {
+                if(!CharacterNavigator.isLoading())
+                    CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
+                    @Override
+                    public Void execute(ArrayList<Character> param)
+                    {
+                        characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
+                        refreshLayout.setRefreshing(false);
+                        return null;
+                    }
+                });
+            }
+        });
 
 
         layoutInitialization();

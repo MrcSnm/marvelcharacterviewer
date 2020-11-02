@@ -1,7 +1,9 @@
 package com.hipreme.mobbuy.marvel.layouts;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,7 +18,7 @@ public class SummaryView
    Context ctx;
 
 
-   public SummaryView(ComicSeriesListView comicSeries, RecyclerView rv)
+   public SummaryView(ComicSeriesListView comicSeries, RecyclerView rv, TextView noText)
    {
        recycler = rv;
        ctx = comicSeries.context;
@@ -25,6 +27,11 @@ public class SummaryView
        rv.setHasFixedSize(true);
        rv.setAdapter(comicSeries);
        listView = comicSeries;
+       if(comicSeries.getItemCount() == 0)
+       {
+           noText.setVisibility(View.VISIBLE);
+           rv.setVisibility(View.GONE);
+       }
    }
 
 }

@@ -16,6 +16,8 @@ import com.hipreme.mobbuy.utils.Resources;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CharacterNavigator
 {
@@ -74,6 +76,16 @@ public class CharacterNavigator
         return currentTask != null && !currentTask.hasFinishedTask();
     }
 
+    public static void onDestroy()
+    {
+        if(currentTask != null)
+        {
+            currentTask.cancel(true);
+            if(pb != null)
+                pb.setVisibility(View.GONE);
+        }
+    }
+
     /**
      * Used for getting only those which are needed
      * @param charsRaw
@@ -100,32 +112,27 @@ public class CharacterNavigator
      */
     public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet)
     {
-        //int rangeIndex;
-        //if((rangeIndex = hasLoadedOffset(CURRENT_OFFSET+1)) == -1)
-        //{
-            if(pb != null)
-                pb.setVisibility(View.VISIBLE);
-            final int currOffset = CURRENT_OFFSET;
-            currentTask = JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
-                        true, true, true), new Callback<Void, JSONObject>() {
-                    @Override
-                    public Void execute(JSONObject param)
+        if(pb != null)
+            pb.setVisibility(View.VISIBLE);
+        final int currOffset = CURRENT_OFFSET;
+        currentTask = JSONUtils.getUrlJson(pagination.getPath(Resources.getString(R.string.marvel_characters),
+                    true, true, true), new Callback<Void, JSONObject>() {
+                @Override
+                public Void execute(JSONObject param)
+                {
+                    ArrayList<Character> chars = Character.getCharacters(param);
+                    if(chars != null)
                     {
-                        ArrayList<Character> chars = Character.getCharacters(param);
-                        if(chars != null)
-                        {
-                            navigatedOffsets.add(new CharacterRange(chars, currOffset));
-                            onGet.execute(chars);
-                            pagination.setOffset(CURRENT_OFFSET+= LIMIT); //Needs to be instant for not having racing conditions
-                        }
-                        pb.setVisibility(View.GONE);
-                        currentTask = null;
-                        return null;
+                        navigatedOffsets.add(new CharacterRange(chars, currOffset));
+                        onGet.execute(chars);
+                        pagination.setOffset(CURRENT_OFFSET+= LIMIT); //Needs to be instant for not having racing conditions
                     }
-                }, "ts,apikey,hash");
-        //}
-        //else
-          //  onGet.execute(navigatedOffsets.get(rangeIndex).characters);
+                    pb.setVisibility(View.GONE);
+
+                    currentTask = null;
+                    return null;
+                }
+            }, "ts,apikey,hash");
     }
 
 

@@ -30,6 +30,7 @@
         android:background="@drawable/border_bottom_background"
         android:layout_gravity="bottom"
     >
+        
         <TextView
             android:id="@+id/txtComicsSeriesViewSummaryName"
             android:layout_width="130dp"

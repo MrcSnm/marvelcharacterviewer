@@ -56,8 +56,8 @@ public class ItemViewActivity extends SavingStateActivity
         FavoriteButton.setupButton(btn,GlobalState.currentViewingCharacter, null);
 
 
-        comics = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, true), (RecyclerView)findViewById(R.id.rvComics));
-        series = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, false), (RecyclerView)findViewById(R.id.rvSeries));
+        comics = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, true), (RecyclerView)findViewById(R.id.rvComics), (TextView)findViewById(R.id.noTextComic));
+        series = new SummaryView(new ComicSeriesListView(GlobalState.currentViewingCharacter, this, false), (RecyclerView)findViewById(R.id.rvSeries), (TextView)findViewById(R.id.noTextSeries));
 
     }
 }
