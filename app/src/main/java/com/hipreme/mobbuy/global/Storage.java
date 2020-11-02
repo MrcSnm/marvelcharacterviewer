@@ -23,7 +23,8 @@ public class Storage
      */
     public static boolean favoriteExists()
     {
-        return !(favoriteText = FileUtils.readFileStreamed(FAVORITE_FILENAME)).equals("");
+        favoriteText = FileUtils.readFileStreamed(FAVORITE_FILENAME);
+        return !(favoriteText.equals(""));
     }
 
     public static boolean favoriteContent(Character c)
@@ -67,13 +68,11 @@ public class Storage
         try
         {
             JSONObject obj = new JSONObject(json);
-            favoritesJSON = ret = Character.getCharactersRaw(obj.getJSONArray(FAVORITES_NAME));
+            ret = Character.getCharactersRaw(obj.getJSONArray(FAVORITES_NAME));
 
-            System.out.println(ret.size());
-
-            for(Character c : favoritesJSON)
+            System.out.println("This is the greatest line on the storage for checking what is happening");
+            for(Character c : ret)
             {
-                System.out.println(c.name + " was loaded");
                 favoriteContent(c);
             }
             isDirty = false;

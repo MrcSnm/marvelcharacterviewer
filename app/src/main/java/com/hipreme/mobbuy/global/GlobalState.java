@@ -33,9 +33,6 @@ public class GlobalState
 
         //Setup connection type checkers
         NetworkManager.startChecking(ctx);
-        //Load favorites from storage
-        if(Storage.favoriteExists())
-            Storage.loadFavorites();
     }
 
     public static void onPause()

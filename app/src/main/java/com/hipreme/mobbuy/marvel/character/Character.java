@@ -80,12 +80,10 @@ public class Character
         try
         {
             ArrayList<Character> ret = new ArrayList<>();
-            System.out.println("JSONARRAY LEN= " +apiArray.length());
             for(int i = 0, len = apiArray.length(); i < len; i++)
             {
                 JSONObject chars = apiArray.getJSONObject(i);
                 ret.add(new Character(chars));
-                System.out.println(ret.get(i).name + " was loaded");
             }
             return ret;
         }

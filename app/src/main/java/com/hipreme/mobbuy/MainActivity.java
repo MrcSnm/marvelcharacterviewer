@@ -178,9 +178,10 @@ public class MainActivity extends SavingStateActivity{
         layoutInitialization();
         CharacterNavigator.setOrderBy("name");
 
+        //Load favorites from storage
         if(Storage.favoriteExists())
         {
-            characterListView = new CharacterListView(Storage.getFavorites(), MainActivity.this);
+            characterListView = new CharacterListView(Storage.loadFavorites(), MainActivity.this);
             recyclerView.setAdapter(characterListView);
             loadCharacters();
         }
@@ -205,7 +206,14 @@ public class MainActivity extends SavingStateActivity{
             @Override
             public Void execute(ArrayList<Character> param)
             {
-                characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
+                //Always includes favorites
+                ArrayList<Character> chars = Storage.getFavorites();
+                if(selectedOption != Options.FAVORITES)
+                {
+                    chars.addAll(CharacterNavigator.getUnfavoritedCharacters
+                            (CharacterNavigator.getLoadedCharacters()));
+                }
+                characterListView.setCharacters(chars);
                 return null;
             }
         });

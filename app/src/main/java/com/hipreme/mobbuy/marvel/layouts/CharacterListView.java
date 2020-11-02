@@ -81,7 +81,9 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
     public void setCharacters(ArrayList<Character> chars)
     {
         characterList = chars;
+        sort();
         notifyDataSetChanged();
+
     }
 
     public static class CharacterView extends RecyclerView.ViewHolder
@@ -97,8 +99,6 @@ public class CharacterListView extends RecyclerView.Adapter<CharacterListView.Ch
             charName = view.findViewById(R.id.txtItemTitle);
             favoriteButton = view.findViewById(R.id.btnItemFavorite);
             this.charListView = charListView;
-
-
 
             view.setOnClickListener(new View.OnClickListener()
             {
