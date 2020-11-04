@@ -8,7 +8,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hipreme.mobbuy.R;
-import com.hipreme.mobbuy.global.Storage;
+import com.hipreme.mobbuy.global.Favorites;
 import com.hipreme.mobbuy.marvel.character.Image;
 import com.hipreme.mobbuy.marvel.character.summaries.ComicSummary;
 import com.hipreme.mobbuy.marvel.character.summaries.SeriesSummary;
@@ -22,7 +22,7 @@ public class FavoriteButton
 
     public static void favoriteCharacter(Character c, Button b, @Nullable  RecyclerView.Adapter adapter)
     {
-        Storage.favoriteContent(c);
+        Favorites.favoriteContent(c);
         saveImagesAsUserData(c);
         updateButtonBackground(b, c);
         if(adapter != null)
@@ -56,25 +56,19 @@ public class FavoriteButton
 
         for(ComicSummary cs : c.comics.items)
         {
-            cs.tryLoadThumbnail(new Callback<Void, Image>() {
-                @Override
-                public Void execute(Image param)
-                {
-                    FileUtils.saveBitmapFromURL(param.getImageUrl());
-                    return null;
-                }
+            cs.tryLoadThumbnail((Image param) ->
+            {
+                FileUtils.saveBitmapFromURL(param.getImageUrl());
+                return null;
             });
         }
 
         for(SeriesSummary ss : c.series.items)
         {
-            ss.tryLoadThumbnail(new Callback<Void, Image>() {
-                @Override
-                public Void execute(Image param)
-                {
-                    FileUtils.saveBitmapFromURL(param.getImageUrl());
-                    return null;
-                }
+            ss.tryLoadThumbnail((Image param) ->
+            {
+                FileUtils.saveBitmapFromURL(param.getImageUrl());
+                return null;
             });
         }
     }

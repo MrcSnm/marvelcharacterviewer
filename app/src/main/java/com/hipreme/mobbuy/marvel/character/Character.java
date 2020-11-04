@@ -2,7 +2,7 @@ package com.hipreme.mobbuy.marvel.character;
 
 import androidx.annotation.Nullable;
 
-import com.hipreme.mobbuy.global.Storage;
+import com.hipreme.mobbuy.global.Favorites;
 import com.hipreme.mobbuy.marvel.character.lists.ComicList;
 import com.hipreme.mobbuy.marvel.character.lists.EventList;
 import com.hipreme.mobbuy.marvel.character.lists.SeriesList;
@@ -86,7 +86,7 @@ public class Character
         try
         {
             ArrayList<Character> ret = new ArrayList<>();
-            ArrayList<Character> favs = Storage.getFavorites();
+            ArrayList<Character> favs = Favorites.getFavorites();
             for(int i = 0, len = apiArray.length(); i < len; i++)
             {
                 JSONObject chars = apiArray.getJSONObject(i);

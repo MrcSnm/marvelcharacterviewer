@@ -12,15 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.hipreme.mobbuy.ItemViewActivity;
 import com.hipreme.mobbuy.R;
 import com.hipreme.mobbuy.global.GlobalState;
-import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.marvel.character.Character;
 import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
-import com.hipreme.mobbuy.utils.FileUtils;
 import com.hipreme.mobbuy.utils.ImageUtils;
 
 import java.util.ArrayList;

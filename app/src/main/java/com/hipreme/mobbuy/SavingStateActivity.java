@@ -3,7 +3,7 @@ package com.hipreme.mobbuy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hipreme.mobbuy.global.GlobalState;
-import com.hipreme.mobbuy.global.Storage;
+import com.hipreme.mobbuy.global.Favorites;
 
 public class SavingStateActivity extends AppCompatActivity
 {
@@ -12,7 +12,7 @@ public class SavingStateActivity extends AppCompatActivity
     {
         super.onPause();
         GlobalState.onPause();
-        Storage.saveFavorites();
+        Favorites.saveFavorites();
     }
 
     @Override
@@ -26,6 +26,6 @@ public class SavingStateActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        Storage.saveFavorites();
+        Favorites.saveFavorites();
     }
 }

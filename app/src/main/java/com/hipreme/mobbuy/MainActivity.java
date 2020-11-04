@@ -1,36 +1,24 @@
 package com.hipreme.mobbuy;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.hipreme.mobbuy.global.Favorites;
 import com.hipreme.mobbuy.global.GlobalState;
-import com.hipreme.mobbuy.global.NetworkManager;
 import com.hipreme.mobbuy.marvel.character.Character;
-import com.hipreme.mobbuy.global.Storage;
 import com.hipreme.mobbuy.global.UI;
 import com.hipreme.mobbuy.marvel.character.CharacterNavigator;
 import com.hipreme.mobbuy.marvel.layouts.CharacterListView;
 import com.hipreme.mobbuy.marvel.layouts.SpaceItemDecoration;
 import com.hipreme.mobbuy.marvel.widgets.FavoriteButton;
 import com.hipreme.mobbuy.utils.Callback;
-import com.hipreme.mobbuy.utils.Digest;
-import com.hipreme.mobbuy.marvel.MarvelAPI;
-import com.hipreme.mobbuy.utils.Resources;
 
 import java.util.ArrayList;
 
@@ -100,7 +88,7 @@ public class MainActivity extends SavingStateActivity{
     {
         onToggleCharacterFavorite(v);
         selectedOption = Options.FAVORITES;
-        ArrayList<Character> favs = Storage.getFavorites();
+        ArrayList<Character> favs = Favorites.getFavorites();
 
         characterListView.setCharacters(favs);
 
@@ -172,7 +160,7 @@ public class MainActivity extends SavingStateActivity{
         });
         recyclerView.setHasFixedSize(true);
 
-        CharacterNavigator.setProgressBar((ProgressBar)findViewById(R.id.mainProgressBar));
+        CharacterNavigator.setProgressBar(findViewById(R.id.mainProgressBar));
         currentViewingCharacter = null;
     }
 
@@ -183,21 +171,19 @@ public class MainActivity extends SavingStateActivity{
         GlobalState.initialize(this);
 
         final SwipeRefreshLayout refreshLayout = findViewById(R.id.pullToRefresh);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
-            {
-                if(!CharacterNavigator.isLoading())
-                    CharacterNavigator.getCharactersFromOffset(new Callback<Void, ArrayList<Character>>() {
-                    @Override
-                    public Void execute(ArrayList<Character> param)
-                    {
-                        characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
-                        refreshLayout.setRefreshing(false);
-                        return null;
-                    }
+        refreshLayout.setOnRefreshListener(() ->
+        {
+            if(!CharacterNavigator.isLoading())
+                CharacterNavigator.getCharactersFromOffset((ArrayList<Character> param) ->
+                {
+                    characterListView.setCharacters(CharacterNavigator.getLoadedCharacters());
+                    refreshLayout.setRefreshing(false);
+                    return null;
+                }, (voidParam)->
+                {
+                    refreshLayout.setRefreshing(false);
+                    return null;
                 });
-            }
         });
 
 
@@ -205,9 +191,9 @@ public class MainActivity extends SavingStateActivity{
         CharacterNavigator.setOrderBy("name");
 
         //Load favorites from storage
-        if(Storage.favoriteExists())
+        if(Favorites.favoriteExists())
         {
-            characterListView = new CharacterListView(Storage.loadFavorites(), MainActivity.this);
+            characterListView = new CharacterListView(Favorites.loadFavorites(), MainActivity.this);
             recyclerView.setAdapter(characterListView);
             loadCharacters();
         }
@@ -245,7 +231,7 @@ public class MainActivity extends SavingStateActivity{
             public Void execute(ArrayList<Character> param)
             {
                 //Always includes favorites
-/*                ArrayList<Character> chars = Storage.getFavorites();
+/*                ArrayList<Character> chars = Favorites.getFavorites();
                 if(selectedOption != Options.FAVORITES)
                 {
 

@@ -2,4 +2,5 @@
 
 This is a sample application for Marvel API loading.
 
-Project made for Mobbuy challenge.
+Project made for Mobbuy challenge by Marcelo S N Mancini.
+

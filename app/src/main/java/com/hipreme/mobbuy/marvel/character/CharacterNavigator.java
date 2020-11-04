@@ -1,31 +1,34 @@
 package com.hipreme.mobbuy.marvel.character;
 
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.hipreme.mobbuy.R;
-import com.hipreme.mobbuy.global.Storage;
+import com.hipreme.mobbuy.global.Favorites;
 import com.hipreme.mobbuy.marvel.MarvelAPI;
 import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.JSONUtils;
 import com.hipreme.mobbuy.utils.Pagination;
 import com.hipreme.mobbuy.utils.Range;
 import com.hipreme.mobbuy.utils.Resources;
+import com.hipreme.mobbuy.utils.Web;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class CharacterNavigator
 {
     private static int CURRENT_OFFSET = 0;
     public static final int LIMIT = 20;
+    public static final long TIMEOUT = 30000; //Thirty seconds
     private static JSONUtils.JSONTask currentTask;
 
     protected static ProgressBar pb;
+    protected static Handler handler = new Handler();
 
     public static int getCurrentOffset(){return CURRENT_OFFSET;}
     protected static class CharacterRange
@@ -82,7 +85,11 @@ public class CharacterNavigator
         {
             currentTask.cancel(true);
             if(pb != null)
+            {
                 pb.setVisibility(View.GONE);
+                Toast.makeText(pb.getContext(), "Connection timeout! Please try at another time", Toast.LENGTH_LONG).show();
+            }
+            currentTask = null;
         }
     }
 
@@ -94,7 +101,7 @@ public class CharacterNavigator
     public static ArrayList<Character> getUnfavoritedCharacters(ArrayList<Character> charsRaw)
     {
         ArrayList<Character> ret = new ArrayList<>();
-        ArrayList<Character> favs = Storage.getFavorites();
+        ArrayList<Character> favs = Favorites.getFavorites();
 
         for(Character c : charsRaw)
         {
@@ -110,7 +117,7 @@ public class CharacterNavigator
      * although the offset only increases if the loading was succesful
      * @param onGet
      */
-    public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet)
+    public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet, Callback<Void,Void> onTimeout)
     {
         if(pb != null)
             pb.setVisibility(View.VISIBLE);
@@ -130,10 +137,22 @@ public class CharacterNavigator
                     pb.setVisibility(View.GONE);
 
                     currentTask = null;
+                    handler.removeCallbacksAndMessages(null);
                     return null;
                 }
             }, "ts,apikey,hash");
+
+        handler.removeCallbacksAndMessages(null);
+        Web.timeoutTask(handler,  currentTask, TIMEOUT, (param) ->
+        {
+            onDestroy();
+            if(onTimeout!=null)
+                onTimeout.execute(null);
+            return null;
+        });
+
     }
+    public static void getCharactersFromOffset(final Callback<Void, ArrayList<Character>> onGet) {getCharactersFromOffset(onGet, null);}
 
 
     public static void setProgressBar(ProgressBar progressBar){pb = progressBar;}

@@ -1,14 +1,13 @@
 package com.hipreme.mobbuy.utils;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
+import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.hipreme.mobbuy.global.NetworkManager;
-import com.hipreme.mobbuy.global.Storage;
-import com.hipreme.mobbuy.global.UI;
+import com.hipreme.mobbuy.utils.Storage;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -138,4 +137,26 @@ public class Web
 
 
     }
+
+
+    public static void timeoutTask(@NonNull Handler h, @Nullable AsyncTask task, long millis, @Nullable Callback<Void, Void> onTimeout)
+    {
+        h.removeCallbacksAndMessages(null);
+        h.postDelayed(() ->
+        {
+            if(task != null)
+                task.cancel(true);
+            if(onTimeout != null)
+                onTimeout.execute(null);
+        }, millis);
+    }
+    public static Handler timeoutTask(AsyncTask task, long millis, Callback<Void, Void> onTimeout)
+    {
+        Handler h = new Handler();
+        timeoutTask(h, task, millis, onTimeout);
+        return h;
+    }
+
+    public static Handler timeoutTask(AsyncTask task, long millis) {return timeoutTask(task, millis, null); }
+
 }

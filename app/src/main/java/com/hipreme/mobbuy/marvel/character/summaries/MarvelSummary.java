@@ -5,6 +5,7 @@ import com.hipreme.mobbuy.marvel.character.Image;
 import com.hipreme.mobbuy.utils.Callback;
 import com.hipreme.mobbuy.utils.Error;
 import com.hipreme.mobbuy.utils.JSONUtils;
+import com.hipreme.mobbuy.utils.Storage;
 
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ public class MarvelSummary
     public static final String URI_THUMBNAIL = "thumbnail";
 
     public JSONObject json;
+    public JSONObject resourceJSON;
     public String resourceURI;
     public String name;
 
@@ -28,6 +30,7 @@ public class MarvelSummary
 
     protected boolean hasLoadedThumbnail = false;
     protected JSONUtils.JSONTask currentTask;
+    protected Callback<Void, Image> currentOnLoad;
 
     /**
      * The parameter is already generated on the container class "MarvelList"
@@ -45,42 +48,55 @@ public class MarvelSummary
             Error.print(e, MarvelSummary.class);}
     }
 
-    public void tryLoadThumbnail(final Callback<Void, Image> onImageLoad)
+    public void loadSummary(JSONObject summaryObj)
+    {
+        try
+        {
+            thumbnail = new Image(summaryObj.getJSONObject(URI_DATA)
+                    .getJSONArray(URI_RESULTS)
+                    .getJSONObject(URI_INDEX)
+                    .getJSONObject(URI_THUMBNAIL));
+            hasLoadedThumbnail = true;
+            resourceJSON = summaryObj;
+        }
+        catch (Exception e){Error.print(e);hasLoadedThumbnail= false;}
+    }
+
+    public void tryLoadThumbnail(final Callback<Void, Image> onImageLoad, boolean storeOnStorage)
     {
         if(currentTask != null)
         {
             currentTask.cancel(true);
             currentTask = null;
-            tryLoadThumbnail(onImageLoad);
-            return;
+
+            Callback cb = (onImageLoad == null) ? currentOnLoad : onImageLoad.concat(currentOnLoad);
+            tryLoadThumbnail(cb, storeOnStorage);
         }
-        else if(thumbnail != null)
-        {
+        else if(thumbnail != null) //Ignore storing
             onImageLoad.execute(thumbnail);
-        }
         else
         {
-            currentTask = JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), new Callback<Void, JSONObject>()
+            final int storeValue;
+            if(storeOnStorage)
+                storeValue = Storage.addToLoadList("Loading thumbnail");
+            else
+                storeValue = -1; //Same as null
+            currentOnLoad = onImageLoad;
+            currentTask = JSONUtils.getUrlJson(resourceURI + MarvelAPI.generateApiKeyString(), (JSONObject param) ->
             {
-                @Override
-                public Void execute(JSONObject param)
-                {
-                    try
-                    {
-                        thumbnail = new Image(param.getJSONObject(URI_DATA)
-                                .getJSONArray(URI_RESULTS)
-                                .getJSONObject(URI_INDEX)
-                                .getJSONObject(URI_THUMBNAIL));
-                        hasLoadedThumbnail = true;
-                        onImageLoad.execute(thumbnail);
-                        currentTask = null;
-                    }
-                    catch (Exception e){Error.print(e);hasLoadedThumbnail =false;}
-                    return null;
-                }
+                loadSummary(param);
+                if(onImageLoad != null)
+                    onImageLoad.execute(thumbnail);
+                Storage.finishLoading(storeValue);
+                currentTask = null;
+                return null;
             }, "ts,apikey,hash");
         }
     }
 
+    public void tryLoadThumbnail(final Callback<Void, Image> onImageLoad)
+    {
+        tryLoadThumbnail(onImageLoad, false);
+    }
 
 }
