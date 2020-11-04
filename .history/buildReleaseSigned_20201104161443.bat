@@ -1,6 +1,7 @@
 @echo off
 ::password = android
 
+set ANDROID_PATH=
 
 set outputFolder=release
 set keyName=release-key.jks

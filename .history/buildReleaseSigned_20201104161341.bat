@@ -1,7 +1,5 @@
 @echo off
 ::password = android
-
-
 set outputFolder=release
 set keyName=release-key.jks
 set outputFile=marvelcharacterviewer

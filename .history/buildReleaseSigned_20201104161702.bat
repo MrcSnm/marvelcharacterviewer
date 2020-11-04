@@ -1,7 +1,9 @@
 @echo off
 ::password = android
 
+set ANDROID_PATH=""
 
+if "%1"=="default" set ANDROID_PATH="%AppData%..\"
 set outputFolder=release
 set keyName=release-key.jks
 set outputFile=marvelcharacterviewer
